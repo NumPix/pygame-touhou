@@ -1,6 +1,8 @@
 from __future__ import annotations
 import numpy as np
 
+from assets.scripts.functions import *
+
 
 class Vector2:
     def __init__(self, x: float = None, y: float = None, coords: np.ndarray = None):
@@ -57,6 +59,14 @@ class Vector2:
 
     def to_tuple(self) -> (float, float):
         return self.x(), self.y()
+
+    def clamp(self, min_vx, max_vx, min_vy=None, max_vy=None):
+        if min_vy is None:
+            min_vy = min_vx
+        if max_vy is None:
+            max_vy = max_vx
+
+        return Vector2(clamp(self.x(), min_vx, max_vx), clamp(self.y(), min_vy, max_vy))
 
     def rotate(self, angle: float):
         angle = np.deg2rad(angle)

@@ -3,6 +3,11 @@ from assets.scripts.characters_data import *
 from assets.scripts.classes.Vector2 import Vector2
 
 from assets.scripts.functions import *
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
+GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
 
 
 class Player:
@@ -11,28 +16,30 @@ class Player:
         self.sprite_sheet: pygame.sprite = characters[id]['sprite-sheet']
         self.attack_function: callable = characters[id]['attack-function']
 
-        self.position = Vector2(600, 700)
+        self.position = Vector2((GAME_ZONE[2] + GAME_ZONE[0] + self.sprite_sheet.x) // 2, 700)
         self.speed = characters[id]['speed']
 
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
         self.current_sprite = 0
 
         self.change_sprite_timer = 0
+        self.slow = False
 
         self.attack_timer = 0
         self.power = 0
         self.bullets = []
 
-        self.slow: bool = True
-
     def update(self):
-        self.power = clamp(self.power + 1 / 60, 0, 100)
+        self.power = clamp(self.power + 1 / 6000, 0, 4)
         self.attack_timer += 1
         self.change_sprite_timer += 1
         self.next_sprite()
 
     def move(self, direction_vector: Vector2) -> None:
-        self.position += direction_vector.normalize() * self.speed * (.5 if self.slow else 1)
+        sprite = self.get_sprite()
+        self.position = (self.position + direction_vector.normalize() * self.speed * (.5 if self.slow else 1))\
+            .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
+                   GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
 
     def next_sprite(self) -> None:
         if self.change_sprite_timer >= 8:
@@ -48,6 +55,6 @@ class Player:
 
     def shoot(self) -> None:
         if self.attack_timer >= 5:
-            self.bullets += self.attack_function(self.position + Vector2.up() * 25, int(self.power))
+            self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
 

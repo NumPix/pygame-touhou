@@ -9,7 +9,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
     power_levels = [0, 1, 2, 3]
     delta_angle = 10
 
-    current_power = power_levels[int((len(power_levels) - 1) * power / 100)]
+    current_power = power_levels[int((len(power_levels) - 1) * power * 20 / 100)]
 
     for i in range(-current_power, current_power + 1):
         i /= 2
@@ -18,11 +18,12 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     return bullets
 
+
 characters = {
     0: {
         "name": "Marisa",
         "speed": 7,
-        "sprite-sheet": SpriteSheet("assets/sprites/marisa_forward.png").crop((50, 100)),
+        "sprite-sheet": SpriteSheet("assets/sprites/marisa_forward.png").crop((25, 50)),
         "bullet-sprite-sheet": SpriteSheet("assets/sprites/marisa_bullet.png").crop((32, 32)),
         "attack-function": marisa_base_attack
     },
@@ -48,6 +49,3 @@ characters = {
         "attack-function": None
     }
 }
-
-
-

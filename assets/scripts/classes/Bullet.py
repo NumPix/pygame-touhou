@@ -3,8 +3,16 @@ import pygame.transform
 from assets.scripts.classes.SpriteSheet import SpriteSheet
 from assets.scripts.classes.Vector2 import Vector2
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
+GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
+
+
 class Bullet:
-    def __init__(self, sprite_sheet: SpriteSheet, position: Vector2, angle: float, speed: float, angular_speed=0, animation_speed = 0):
+    def __init__(self, sprite_sheet: SpriteSheet, position: Vector2, angle: float, speed: float, angular_speed=0,
+                 animation_speed=0):
         self.sprite_sheet = sprite_sheet
 
         self.position: Vector2 = position
@@ -23,7 +31,11 @@ class Bullet:
     def move(self):
         self.position += self.velocity()
         self.angle += self.angular_speed
-        if self.position.x() < 0 or self.position.y() < 0:
+        sprite = self.get_sprite()
+        if (self.position.x() - sprite.rect.w // 2 < GAME_ZONE[0] - 50 or
+            self.position.y() - sprite.rect.h // 2 < GAME_ZONE[1] - 50) or \
+                (self.position.x() + sprite.rect.w // 2 > GAME_ZONE[0] + GAME_ZONE[2] + 50 or
+                 self.position.y() + sprite.rect.h // 2 > GAME_ZONE[1] + GAME_ZONE[3] + 50):
             del self
             return False
         return True
