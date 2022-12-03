@@ -45,9 +45,11 @@ class Vector2:
         return np.sqrt(np.sum(self.coords * self.coords))
 
     def sqr_length(self) -> float:
-        return self.coords * self.coords
+        return sum(self.coords * self.coords)
 
     def normalize(self) -> Vector2:
+        if self.to_tuple() == (0, 0):
+            return Vector2.zero()
         return Vector2(coords=self.coords / self.length())
 
     def angle_between(self, other: Vector2) -> float:
@@ -55,6 +57,12 @@ class Vector2:
 
     def to_tuple(self) -> (float, float):
         return self.x(), self.y()
+
+    def rotate(self, angle: float):
+        angle = np.deg2rad(angle)
+        rotor = np.array([[np.cos(angle), np.sin(angle)],
+                          [-np.sin(angle), np.cos(angle)]])
+        return Vector2(coords=np.matmul(self.coords, rotor))
 
     @staticmethod
     def one() -> Vector2:
@@ -74,8 +82,8 @@ class Vector2:
 
     @staticmethod
     def up() -> Vector2:
-        return Vector2(0, 1)
+        return Vector2(0, -1)
 
     @staticmethod
     def down() -> Vector2:
-        return Vector2(0, -1)
+        return Vector2(0, 1)

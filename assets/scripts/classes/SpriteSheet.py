@@ -22,7 +22,7 @@ class SpriteSheet:
         ind_y = index // self.x
         ind_x = index % self.x
 
-        image = pygame.Surface(self.sprite_size)
+        image = pygame.Surface(self.sprite_size, pygame.SRCALPHA)
         new_sprite = pygame.sprite.Sprite()
         rect = pygame.Rect(ind_x * self.sprite_size[0], ind_y * self.sprite_size[1], self.sprite_size[0], self.sprite_size[1])
         image.blit(self.sheet, (0, 0), rect)

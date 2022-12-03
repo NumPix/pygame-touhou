@@ -12,12 +12,19 @@ clock = pygame.time.Clock()
 def draw():
     screen.fill((0, 0, 0))
 
-    player.next_sprite()
+    player.update()
+
+    bullet_group = pygame.sprite.RenderPlain()
+
+    for bullet in player.bullets:
+        bullet.move()
+        bullet_group.add(bullet.get_sprite())
 
     group = pygame.sprite.RenderPlain()
     group.add(player.get_sprite())
 
     group.draw(screen)
+    bullet_group.draw(screen)
     pygame.display.flip()
 
     clock.tick(60)
@@ -37,14 +44,21 @@ if __name__ == "__main__":
             if evt.type == QUIT:
                 pygame.quit()
 
+        move_direction = Vector2.zero()
+
         if pygame.key.get_pressed()[pygame.K_UP]:
-            player.move(Vector2.down())
+            move_direction += Vector2.up()
         if pygame.key.get_pressed()[pygame.K_DOWN]:
-            player.move(Vector2.up())
+            move_direction += Vector2.down()
         if pygame.key.get_pressed()[pygame.K_LEFT]:
-            player.move(Vector2.left())
+            move_direction += Vector2.left()
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            player.move(Vector2.right())
+            move_direction += Vector2.right()
+
+        if pygame.key.get_pressed()[pygame.K_z]:
+            player.attack()
+
+        player.move(move_direction)
 
         if pygame.key.get_pressed()[pygame.K_LSHIFT]:
             player.slow = True
