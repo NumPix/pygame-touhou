@@ -44,8 +44,8 @@ def draw():
     hud_group = pygame.sprite.RenderPlain()
     hud_group.add(bg)
 
-    fps_label = font.render(str(round(clock.get_fps(), 1)), True, (255, 255, 255))
-    power_label = font.render(f"power:  {round(player.power, 2)} / 4.00", True, (255, 255, 255))
+    fps_label = font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True, (255, 255, 255))
+    power_label = font.render(f"power:  {format(round(player.power, 2), '.2f')} / 4.00", True, (255, 255, 255))
 
     player_group = pygame.sprite.RenderPlain()
     player_group.add(player.get_sprite())
@@ -53,7 +53,7 @@ def draw():
     player_group.draw(screen)
     bullet_group.draw(screen)
     hud_group.draw(screen)
-    screen.blit(fps_label, (WIDTH - fps_label.get_rect().w, HEIGHT - fps_label.get_rect().h))
+    screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 25, HEIGHT - fps_label.get_rect().h))
     screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
 
     pygame.display.flip()

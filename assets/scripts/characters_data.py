@@ -1,5 +1,5 @@
 from assets.scripts.classes.SpriteSheet import SpriteSheet
-from assets.scripts.classes.Bullet import Bullet
+from assets.scripts.classes.PlayerBullet import PlayerBullet
 from assets.scripts.classes.Bullet import Vector2
 
 
@@ -13,7 +13,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     for i in range(-current_power, current_power + 1):
         i /= 2
-        bullet = Bullet(characters[0]["bullet-sprite-sheet"], fire_point, delta_angle * i, 20)
+        bullet = PlayerBullet(characters[0]["bullet-sprite-sheet"], fire_point, delta_angle * i, 20, damage=40)
         bullets.append(bullet)
 
     return bullets
