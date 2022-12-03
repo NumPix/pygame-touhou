@@ -2,6 +2,8 @@ import pygame
 from assets.scripts.characters_data import *
 from assets.scripts.classes.Vector2 import Vector2
 
+from assets.scripts.functions import *
+
 
 class Player:
     def __init__(self, id: int):
@@ -9,7 +11,7 @@ class Player:
         self.sprite_sheet: pygame.sprite = characters[id]['sprite-sheet']
         self.attack_function: callable = characters[id]['attack-function']
 
-        self.position = Vector2(100, 100)
+        self.position = Vector2(600, 700)
         self.speed = characters[id]['speed']
 
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
@@ -24,7 +26,7 @@ class Player:
         self.slow: bool = True
 
     def update(self):
-        self.power += 1 / 60
+        self.power = clamp(self.power + 1 / 60, 0, 100)
         self.attack_timer += 1
         self.change_sprite_timer += 1
         self.next_sprite()
@@ -44,8 +46,8 @@ class Player:
 
         return sprite
 
-    def attack(self) -> None:
+    def shoot(self) -> None:
         if self.attack_timer >= 5:
-            self.bullets += self.attack_function(self.position + Vector2.up() * 5, int(self.power))
+            self.bullets += self.attack_function(self.position + Vector2.up() * 25, int(self.power))
             self.attack_timer = 0
 

@@ -11,13 +11,14 @@ clock = pygame.time.Clock()
 
 def draw():
     screen.fill((0, 0, 0))
-
     player.update()
 
     bullet_group = pygame.sprite.RenderPlain()
 
     for bullet in player.bullets:
-        bullet.move()
+        on_screen = bullet.move()
+        if not on_screen:
+            player.bullets.remove(bullet)
         bullet_group.add(bullet.get_sprite())
 
     group = pygame.sprite.RenderPlain()
@@ -56,7 +57,7 @@ if __name__ == "__main__":
             move_direction += Vector2.right()
 
         if pygame.key.get_pressed()[pygame.K_z]:
-            player.attack()
+            player.shoot()
 
         player.move(move_direction)
 

@@ -23,6 +23,10 @@ class Bullet:
     def move(self):
         self.position += self.velocity()
         self.angle += self.angular_speed
+        if self.position.x() < 0 or self.position.y() < 0:
+            del self
+            return False
+        return True
 
     def next_sprite(self):
         self.change_sprite_timer += 1

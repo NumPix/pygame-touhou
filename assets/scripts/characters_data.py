@@ -6,12 +6,12 @@ from assets.scripts.classes.Bullet import Vector2
 def marisa_base_attack(fire_point: Vector2, power: int):
     bullets = []
 
-    power_levels = [2, 3, 4, 6, 8]
+    power_levels = [0, 1, 2, 3]
     delta_angle = 10
 
     current_power = power_levels[int((len(power_levels) - 1) * power / 100)]
 
-    for i in range(-current_power, current_power):
+    for i in range(-current_power, current_power + 1):
         i /= 2
         bullet = Bullet(characters[0]["bullet-sprite-sheet"], fire_point, delta_angle * i, 20)
         bullets.append(bullet)
