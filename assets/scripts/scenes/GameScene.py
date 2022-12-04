@@ -72,9 +72,10 @@ class GameScene(Scene):
 
         hud_group.add(self.bg)
 
-        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True, (255, 255, 255))
+        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
+                                     (255, 255, 255)).convert_alpha()
         power_label = self.font.render(f"power:  {format(round(self.player.power, 2), '.2f')} / 4.00", True,
-                                       (255, 255, 255))
+                                       (255, 255, 255)).convert_alpha()
 
         player_group.add(self.player.get_sprite())
 

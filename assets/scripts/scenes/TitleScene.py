@@ -12,13 +12,13 @@ class TitleScene(Scene):
         super().__init__()
         self.background = pygame.sprite.Sprite()
         self.background.rect = (0, 0, WIDTH, HEIGHT)
-        self.background.image = pygame.image.load("assets/sprites/backgrounds/title_screen_wallpaper.jpg")
+        self.background.image = pygame.image.load("assets/sprites/backgrounds/title_screen_wallpaper.jpg").convert_alpha()
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 45)
         play_button_sprites = [
-            self.font.render("Play", True, (255, 255, 255)),
-            self.font.render("Play", True, (100, 100, 100)),
-            self.font.render("Play", True, (100, 100, 100))
+            self.font.render("Play", True, (255, 255, 255)).convert_alpha(),
+            self.font.render("Play", True, (100, 100, 100)).convert_alpha(),
+            self.font.render("Play", True, (100, 100, 100)).convert_alpha()
         ]
 
         play_button_size = play_button_sprites[0].get_size()

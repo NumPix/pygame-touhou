@@ -4,7 +4,7 @@ import pygame
 
 class SpriteSheet:
     def __init__(self, filename):
-        self.sheet = pygame.image.load(filename)
+        self.sheet = pygame.image.load(filename).convert_alpha()
         self.sprite_size: (int, int) = (0, 0)
         self.x: int = 0
         self.y: int = 0
@@ -22,7 +22,7 @@ class SpriteSheet:
         ind_y = index // self.x
         ind_x = index % self.x
 
-        image = pygame.Surface(self.sprite_size, pygame.SRCALPHA)
+        image = pygame.Surface(self.sprite_size, pygame.SRCALPHA).convert_alpha()
         new_sprite = pygame.sprite.Sprite()
         rect = pygame.Rect(ind_x * self.sprite_size[0], ind_y * self.sprite_size[1], self.sprite_size[0], self.sprite_size[1])
         image.blit(self.sheet, (0, 0), rect)

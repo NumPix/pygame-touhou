@@ -35,7 +35,7 @@ class Player(Entity):
         self.power = clamp(self.power + 1 / 6000, 0, 4)
         self.attack_timer += 1
         self.change_sprite_timer += 1
-        self.next_sprite(10)
+        self.next_sprite(5)
 
     def move(self, direction_vector: Vector2) -> None:
         sprite = self.get_sprite()
@@ -44,7 +44,7 @@ class Player(Entity):
                    GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
 
     def shoot(self) -> None:
-        if self.attack_timer >= 5:
+        if self.attack_timer >= 3:
             self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
 
