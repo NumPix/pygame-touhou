@@ -1,4 +1,4 @@
-from assets.scripts.classes.Bullet import Bullet
+from assets.scripts.classes.game_logic.Bullet import Bullet
 
 
 class PlayerBullet(Bullet):

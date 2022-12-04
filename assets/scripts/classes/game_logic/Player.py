@@ -1,4 +1,6 @@
 import pygame
+
+from assets.scripts.classes.game_logic.Entity import Entity
 from assets.scripts.characters_data import *
 from assets.scripts.classes.Vector2 import Vector2
 
@@ -10,8 +12,9 @@ load_dotenv(".env")
 GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
 
 
-class Player:
+class Player(Entity):
     def __init__(self, id: int):
+        super().__init__()
         self.name: str = characters[id]['name']
         self.sprite_sheet: pygame.sprite = characters[id]['sprite-sheet']
         self.attack_function: callable = characters[id]['attack-function']
@@ -20,7 +23,6 @@ class Player:
         self.speed = characters[id]['speed']
 
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
-        self.current_sprite = 0
 
         self.change_sprite_timer = 0
         self.slow = False
@@ -33,25 +35,13 @@ class Player:
         self.power = clamp(self.power + 1 / 6000, 0, 4)
         self.attack_timer += 1
         self.change_sprite_timer += 1
-        self.next_sprite()
+        self.next_sprite(10)
 
     def move(self, direction_vector: Vector2) -> None:
         sprite = self.get_sprite()
         self.position = (self.position + direction_vector.normalize() * self.speed * (.5 if self.slow else 1))\
             .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
                    GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
-
-    def next_sprite(self) -> None:
-        if self.change_sprite_timer >= 8:
-            self.current_sprite = (self.current_sprite + 1) % self.sprite_sheet.length
-            self.change_sprite_timer = 0
-
-    def get_sprite(self) -> pygame.sprite.Sprite:
-        sprite = self.sprite_sheet[self.current_sprite]
-        sprite.rect = sprite.image.get_rect()
-        sprite.rect.center = self.position.to_tuple()
-
-        return sprite
 
     def shoot(self) -> None:
         if self.attack_timer >= 5:
