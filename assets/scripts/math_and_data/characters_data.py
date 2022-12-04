@@ -1,4 +1,4 @@
-from assets.scripts.classes.SpriteSheet import SpriteSheet
+from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.classes.game_logic.PlayerBullet import PlayerBullet
 from assets.scripts.classes.game_logic.Bullet import Vector2
 

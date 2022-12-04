@@ -1,6 +1,6 @@
 import pygame
 
-from assets.scripts.classes.SpriteSheet import SpriteSheet
+from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 
 
 class Button:

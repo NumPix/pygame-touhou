@@ -2,9 +2,9 @@ import pygame.image
 from pygame.locals import *
 
 from assets.scripts.scenes.GameScene import GameScene
-from assets.scripts.enviroment import *
-from assets.scripts.classes.Scenes import Scene
-from assets.scripts.classes.Button import Button
+from assets.scripts.math_and_data.enviroment import *
+from assets.scripts.classes.hud_and_rendering.Scene import Scene
+from assets.scripts.classes.hud_and_rendering.Button import Button
 
 
 class TitleScene(Scene):
@@ -23,7 +23,7 @@ class TitleScene(Scene):
 
         play_button_size = play_button_sprites[0].get_size()
 
-        self.play_button = Button(play_button_sprites, pygame.Rect(1000, 200, play_button_size[0], play_button_size[1]),
+        self.play_button = Button(play_button_sprites, pygame.Rect(1000, 100, play_button_size[0], play_button_size[1]),
                                   on_mouse_click=(lambda: self.switch_to_scene(GameScene())))
 
     def render(self, screen, clock):

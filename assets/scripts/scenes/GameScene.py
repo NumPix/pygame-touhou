@@ -2,10 +2,10 @@ import pygame
 from pygame.locals import *
 
 from assets.scripts.classes.game_logic.Player import Player
-from assets.scripts.classes.Scenes import Scene
-from assets.scripts.classes.Vector2 import Vector2
+from assets.scripts.classes.hud_and_rendering.Scene import Scene
+from assets.scripts.math_and_data.Vector2 import Vector2
 
-from assets.scripts.enviroment import *
+from assets.scripts.math_and_data.enviroment import *
 
 from PIL import Image
 

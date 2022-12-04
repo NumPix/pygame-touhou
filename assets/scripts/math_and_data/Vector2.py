@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
 
-from assets.scripts.functions import *
+from assets.scripts.math_and_data.functions import *
 
 
 class Vector2:

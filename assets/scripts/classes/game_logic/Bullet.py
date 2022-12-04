@@ -1,7 +1,7 @@
 import pygame.transform
 
-from assets.scripts.classes.SpriteSheet import SpriteSheet
-from assets.scripts.classes.Vector2 import Vector2
+from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
+from assets.scripts.math_and_data.Vector2 import Vector2
 
 from dotenv import load_dotenv
 import os

@@ -1,10 +1,10 @@
 import pygame
 
 from assets.scripts.classes.game_logic.Entity import Entity
-from assets.scripts.characters_data import *
-from assets.scripts.classes.Vector2 import Vector2
+from assets.scripts.math_and_data.characters_data import *
+from assets.scripts.math_and_data.Vector2 import Vector2
 
-from assets.scripts.functions import *
+from assets.scripts.math_and_data.functions import *
 from dotenv import load_dotenv
 import os
 
