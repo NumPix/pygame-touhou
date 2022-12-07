@@ -1,6 +1,6 @@
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
-from assets.scripts.classes.game_logic.Entity import Entity
+from assets.scripts.classes.game_logic.touhou.Entity import Entity
 
 
 class Enemy(Entity):
@@ -9,20 +9,20 @@ class Enemy(Entity):
         super().__init__()
         self.position: Vector2 = position
 
-        self.max_hp = hp
-        self.current_hp = self.max_hp
+        self.max_hp: int = hp
+        self.current_hp: int = self.max_hp
 
-        self.attack_functions = attack_functions
+        self.attack_functions: [callable, ...] = attack_functions
 
         self.sprite_sheet = sprite_sheet
         self.current_sprite = 0
         self.change_sprite_timer = 10
 
-        self.bullets = bullet_pool
+        self.bullets: list = bullet_pool
 
-    def move(self, velocity: Vector2):
+    def move(self, velocity: Vector2) -> None:
         self.position += velocity
 
-    def update(self):
+    def update(self) -> None:
         self.change_sprite_timer += 1
         self.next_sprite(8)

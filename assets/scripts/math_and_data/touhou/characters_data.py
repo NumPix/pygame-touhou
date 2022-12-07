@@ -1,6 +1,6 @@
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
-from assets.scripts.classes.game_logic.PlayerBullet import PlayerBullet
-from assets.scripts.classes.game_logic.Bullet import Vector2
+from assets.scripts.classes.game_logic.touhou.PlayerBullet import PlayerBullet
+from assets.scripts.classes.game_logic.touhou.Bullet import Vector2
 
 
 def marisa_base_attack(fire_point: Vector2, power: int):
@@ -23,8 +23,8 @@ characters = {
     0: {
         "name": "Marisa",
         "speed": 7,
-        "sprite-sheet": SpriteSheet("assets/sprites/entities/marisa_forward.png").crop((25, 50)),
-        "bullet-sprite-sheet": SpriteSheet("assets/sprites/bullets/marisa_bullet.png").crop((32, 32)),
+        "sprite-sheet": SpriteSheet("assets/sprites/touhou/entities/marisa_forward.png").crop((25, 50)),
+        "bullet-sprite-sheet": SpriteSheet("assets/sprites/touhou/bullets/marisa_bullet.png").crop((32, 32)),
         "attack-function": marisa_base_attack
     },
     1: {

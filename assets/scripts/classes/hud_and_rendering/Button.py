@@ -26,7 +26,7 @@ class Button:
         self.on_mouse_enter = on_mouse_enter
         self.on_mouse_click = on_mouse_click
 
-    def draw(self, screen):
+    def draw(self, screen) -> None:
         sprite: pygame.Surface
 
         if self.pressed:
@@ -41,7 +41,7 @@ class Button:
 
         screen.blit(sprite, self.rect)
 
-    def check_state(self, events: [pygame.event, ...]):
+    def check_state(self, events: [pygame.event, ...]) -> None:
         cursor = pygame.mouse.get_pos()
 
         if self.rect.collidepoint(cursor):

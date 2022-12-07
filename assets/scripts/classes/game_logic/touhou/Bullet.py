@@ -1,13 +1,9 @@
+import numpy
 import pygame.transform
 
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv(".env")
-GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
+from assets.scripts.math_and_data.enviroment import *
 
 
 class Bullet:
@@ -25,12 +21,12 @@ class Bullet:
         self.change_sprite_timer = 0
         self.animation_speed = animation_speed
 
-    def velocity(self):
+    def velocity(self) -> Vector2:
         return Vector2(self.speed, 0).rotate(-self.angle - 90)
 
-    def move(self):
+    def move(self) -> bool:
         self.position += self.velocity()
-        self.angle += self.angular_speed
+        self.angle += self.angular_speed * numpy.pi / 180 / FPS
         sprite = self.get_sprite()
         if (self.position.x() - sprite.rect.w // 2 < GAME_ZONE[0] - 50 or
             self.position.y() - sprite.rect.h // 2 < GAME_ZONE[1] - 50) or \
@@ -40,13 +36,13 @@ class Bullet:
             return False
         return True
 
-    def next_sprite(self):
+    def next_sprite(self) -> None:
         self.change_sprite_timer += 1
-        if self.change_sprite_timer == 60 - self.animation_speed:
+        if self.change_sprite_timer == FPS - self.animation_speed:
             self.current_sprite = (self.current_sprite + 1) % self.sprite_sheet.length
             self.change_sprite_timer = 0
 
-    def get_sprite(self):
+    def get_sprite(self) -> pygame.sprite.Sprite:
         sprite = self.sprite_sheet[self.current_sprite]
         sprite.rect = sprite.image.get_rect()
         sprite.rect.center = self.position.to_tuple()

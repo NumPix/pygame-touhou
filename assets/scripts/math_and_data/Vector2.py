@@ -11,33 +11,33 @@ class Vector2:
         elif coords is not None:
             self.coords = coords
 
-    def x(self):
+    def x(self) -> float:
         return self.coords[0]
 
-    def y(self):
+    def y(self) -> float:
         return self.coords[1]
 
-    def __add__(self, other: float | Vector2):
+    def __add__(self, other: float | Vector2) -> Vector2:
         if type(other) == Vector2:
             return Vector2(coords=self.coords + other.coords)
         return Vector2(coords=self.coords + other)
 
-    def __sub__(self, other: float | Vector2):
+    def __sub__(self, other: float | Vector2) -> Vector2:
         if type(other) == Vector2:
             return Vector2(coords=self.coords - other.coords)
         return Vector2(coords=self.coords - other)
 
-    def __mul__(self, other: float | Vector2):
+    def __mul__(self, other: float | Vector2) -> Vector2:
         if type(other) == Vector2:
             return Vector2(coords=self.coords * other.coords)
         return Vector2(coords=self.coords * other)
 
-    def __truediv__(self, other: float | Vector2):
+    def __truediv__(self, other: float | Vector2) -> Vector2:
         if type(other) == Vector2:
             return Vector2(coords=self.coords / other.coords)
         return Vector2(coords=self.coords / other)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Vector2({self.x()}, {self.y()})"
 
     def dot(self, other) -> float:
@@ -60,7 +60,7 @@ class Vector2:
     def to_tuple(self) -> (float, float):
         return self.x(), self.y()
 
-    def clamp(self, min_vx, max_vx, min_vy=None, max_vy=None):
+    def clamp(self, min_vx, max_vx, min_vy=None, max_vy=None) -> Vector2:
         if min_vy is None:
             min_vy = min_vx
         if max_vy is None:
@@ -68,7 +68,7 @@ class Vector2:
 
         return Vector2(clamp(self.x(), min_vx, max_vx), clamp(self.y(), min_vy, max_vy))
 
-    def rotate(self, angle: float):
+    def rotate(self, angle: float) -> Vector2:
         angle = np.deg2rad(angle)
         rotor = np.array([[np.cos(angle), np.sin(angle)],
                           [-np.sin(angle), np.cos(angle)]])

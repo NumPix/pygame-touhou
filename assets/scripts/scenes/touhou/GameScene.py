@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from assets.scripts.classes.game_logic.Player import Player
+from assets.scripts.classes.game_logic.touhou.Player import Player
 from assets.scripts.classes.hud_and_rendering.Scene import Scene
 from assets.scripts.math_and_data.Vector2 import Vector2
 
@@ -15,15 +15,13 @@ class GameScene(Scene):
         super().__init__()
         self.GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
 
-        self.background = Image.open("assets/sprites/backgrounds/background.png").convert("RGBA")
+        self.background = Image.open("assets/sprites/touhou/backgrounds/background.png").convert("RGBA")
         self.background.paste(Image.new("RGBA", (GAME_ZONE[2], GAME_ZONE[3]), (255, 255, 255, 0)),
                               (GAME_ZONE[0], GAME_ZONE[1]))
 
         self.bg = pygame.sprite.Sprite()
         self.bg.rect = Rect(0, 0, WIDTH, HEIGHT)
         self.bg.image = pygame.image.fromstring(self.background.tobytes(), self.background.size, self.background.mode)
-
-        pygame.font.init()
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 30)
 
