@@ -1,8 +1,11 @@
+import numpy as np
 import pygame
 from pygame.locals import *
 
+from assets.scripts.classes.game_logic.touhou.Enemy import Enemy
 from assets.scripts.classes.game_logic.touhou.Player import Player
 from assets.scripts.classes.hud_and_rendering.Scene import Scene
+from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
 
 from assets.scripts.math_and_data.enviroment import *
@@ -24,6 +27,8 @@ class GameScene(Scene):
         self.bg.image = pygame.image.fromstring(self.background.tobytes(), self.background.size, self.background.mode)
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 30)
+
+        self.enemy = Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]), [np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])], SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)), 100, [], [])
 
         self.player = Player(0)
 
@@ -55,6 +60,7 @@ class GameScene(Scene):
 
     def update(self):
         self.player.update()
+        self.enemy.move()
 
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)
@@ -76,6 +82,7 @@ class GameScene(Scene):
                                        (255, 255, 255)).convert_alpha()
 
         player_group.add(self.player.get_sprite())
+        player_group.add(self.enemy.get_sprite())
 
         player_group.draw(screen)
         bullet_group.draw(screen)
