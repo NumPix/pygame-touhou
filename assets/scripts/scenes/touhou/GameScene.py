@@ -28,7 +28,7 @@ class GameScene(Scene):
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 30)
 
-        self.enemy = Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]), [np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])], SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)), 100, [], [])
+        self.enemy = Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]), [np.array([250, 0]), np.array([100, 300]), np.array([0, 400]), np.array([550, 300]), np.array([250, 0])], SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)), 100, [], [])
 
         self.player = Player(0)
 
@@ -61,6 +61,7 @@ class GameScene(Scene):
     def update(self):
         self.player.update()
         self.enemy.move()
+        self.enemy.update()
 
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)

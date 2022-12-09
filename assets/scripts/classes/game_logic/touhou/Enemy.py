@@ -30,12 +30,14 @@ class Enemy(Entity):
 
         self.bullets: list = bullet_pool
 
+        self.speed = .5
+
     def move(self) -> None:
         self.position = self.start_position + Vector2(coords=BSpline.curve(self.trajectory, self.t))
-        self.t += 1 / FPS
+        self.t += self.speed / FPS
         if self.t > len(self.trajectory) - 1:
-            self.t = len(self.trajectory) - 1
+            self.t = 0
 
     def update(self) -> None:
         self.change_sprite_timer += 1
-        self.next_sprite(8)
+        self.next_sprite(4)
