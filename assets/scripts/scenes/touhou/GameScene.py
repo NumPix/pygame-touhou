@@ -2,6 +2,7 @@ import numpy as np
 import pygame
 from pygame.locals import *
 
+from assets.scripts.classes.game_logic.touhou.Collider import Collider
 from assets.scripts.classes.game_logic.touhou.Enemy import Enemy
 from assets.scripts.classes.game_logic.touhou.Player import Player
 from assets.scripts.classes.hud_and_rendering.Scene import Scene
@@ -11,6 +12,8 @@ from assets.scripts.math_and_data.Vector2 import Vector2
 from assets.scripts.math_and_data.enviroment import *
 
 from PIL import Image
+
+from assets.scripts.math_and_data.functions import scale_sprite
 
 
 class GameScene(Scene):
@@ -28,9 +31,14 @@ class GameScene(Scene):
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 30)
 
-        self.enemy = Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]), [np.array([250, 0]), np.array([100, 300]), np.array([0, 400]), np.array([550, 300]), np.array([250, 0])], SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)), 100, [], [])
-
         self.player = Player(0)
+
+        self.enemy = Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]),
+                           [np.array([250, 0]), np.array([100, 300]), np.array([0, 400]), np.array([550, 300]), np.array([250, 0])],
+                           SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
+                           Collider(20),
+                           1000, [], [],
+                           self.player)
 
     def process_input(self, events):
         for evt in events:
@@ -62,6 +70,8 @@ class GameScene(Scene):
         self.player.update()
         self.enemy.move()
         self.enemy.update()
+        if not self.enemy.check_alive():
+            self.enemy.position = Vector2(-100, 100)
 
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)

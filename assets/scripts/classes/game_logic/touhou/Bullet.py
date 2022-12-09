@@ -1,17 +1,19 @@
 import numpy
 import pygame.transform
 
+from assets.scripts.classes.game_logic.touhou.Collider import Collider
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
 from assets.scripts.math_and_data.enviroment import *
 
 
 class Bullet:
-    def __init__(self, sprite_sheet: SpriteSheet, position: Vector2, angle: float, speed: float, angular_speed=0,
+    def __init__(self, sprite_sheet: SpriteSheet, collider: Collider,  position: Vector2, angle: float, speed: float, angular_speed=0,
                  animation_speed=0):
         self.sprite_sheet = sprite_sheet
 
         self.position: Vector2 = position
+        self.collider = collider
 
         self.angle: float = angle
         self.speed: float = speed
@@ -25,6 +27,8 @@ class Bullet:
         return Vector2(self.speed, 0).rotate(-self.angle - 90)
 
     def move(self) -> bool:
+        self.collider.position = self.position + self.collider.offset
+
         self.position += self.velocity()
         self.angle += self.angular_speed * numpy.pi / 180 / FPS
         sprite = self.get_sprite()

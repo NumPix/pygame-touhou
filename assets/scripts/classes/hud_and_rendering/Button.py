@@ -59,6 +59,6 @@ class Button:
             if evt.type == pygame.MOUSEBUTTONDOWN and self.hovered:
                 self.pressed = True
             if evt.type == pygame.MOUSEBUTTONUP and self.hovered:
-                self.pressed = False
-                if self.on_mouse_click:
+                if self.on_mouse_click and self.pressed:
                     self.on_mouse_click()
+                self.pressed = False

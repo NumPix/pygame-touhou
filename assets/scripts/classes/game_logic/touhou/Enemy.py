@@ -1,5 +1,7 @@
 import numpy as np
 
+from assets.scripts.classes.game_logic.touhou.Collider import Collider
+from assets.scripts.classes.game_logic.touhou.Player import Player
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
 from assets.scripts.classes.game_logic.touhou.Entity import Entity
@@ -10,9 +12,8 @@ BSpline = BasisSpline()
 
 
 class Enemy(Entity):
-    def __init__(self, position: Vector2, trajectory: [np.ndarray, ...], sprite_sheet: SpriteSheet, hp: int,
-                 attack_functions: [callable, ...],
-                 bullet_pool):
+    def __init__(self, position: Vector2, trajectory: [np.ndarray, ...], sprite_sheet: SpriteSheet,
+                 collider: Collider,  hp: int, attack_functions: [callable, ...], bullet_pool, player: Player):
         super().__init__()
         self.start_position: Vector2 = position
         self.position: Vector2 = position
@@ -30,9 +31,15 @@ class Enemy(Entity):
 
         self.bullets: list = bullet_pool
 
+        self.collider: Collider = collider
+
+        self.target = player
+
         self.speed = .5
 
     def move(self) -> None:
+        self.collider.position = self.position + self.collider.offset
+
         self.position = self.start_position + Vector2(coords=BSpline.curve(self.trajectory, self.t))
         self.t += self.speed / FPS
         if self.t > len(self.trajectory) - 1:
@@ -41,3 +48,14 @@ class Enemy(Entity):
     def update(self) -> None:
         self.change_sprite_timer += 1
         self.next_sprite(4)
+
+        for bullet in self.target.bullets:
+            if self.collider.check_collision(bullet.collider):
+                self.get_damage(bullet.damage)
+
+    def get_damage(self, damage: int):
+        self.current_hp -= damage
+
+
+    def check_alive(self):
+        return self.current_hp > 0

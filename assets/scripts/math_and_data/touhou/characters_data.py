@@ -1,3 +1,4 @@
+from assets.scripts.classes.game_logic.touhou.Collider import Collider
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.classes.game_logic.touhou.PlayerBullet import PlayerBullet
 from assets.scripts.classes.game_logic.touhou.Bullet import Vector2
@@ -13,7 +14,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     for i in range(-current_power, current_power + 1):
         i /= 2
-        bullet = PlayerBullet(characters[0]["bullet-sprite-sheet"], fire_point, delta_angle * i, 30, damage=40)
+        bullet = PlayerBullet(characters[0]["bullet-sprite-sheet"], Collider(5), fire_point, delta_angle * i, 30, damage=40)
         bullets.append(bullet)
 
     return bullets
