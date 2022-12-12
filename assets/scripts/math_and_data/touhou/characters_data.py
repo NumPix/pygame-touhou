@@ -14,7 +14,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     for i in range(-current_power, current_power + 1):
         i /= 2
-        bullet = PlayerBullet(characters[0]["bullet-sprite-sheet"], Collider(5), fire_point, delta_angle * i, 30, damage=40)
+        bullet = PlayerBullet(characters[0]["bullet-sprite-sheet"], Collider(5, offset=Vector2.up() * 40), fire_point, delta_angle * i, 30, damage=1)
         bullets.append(bullet)
 
     return bullets

@@ -70,8 +70,8 @@ class Vector2:
 
     def rotate(self, angle: float) -> Vector2:
         angle = np.deg2rad(angle)
-        rotor = np.array([[np.cos(angle), np.sin(angle)],
-                          [-np.sin(angle), np.cos(angle)]])
+        rotor = np.array([[np.cos(angle), -np.sin(angle)],
+                          [np.sin(angle), np.cos(angle)]])
         return Vector2(coords=np.matmul(self.coords, rotor))
 
     @staticmethod

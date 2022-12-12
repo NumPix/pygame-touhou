@@ -30,3 +30,6 @@ class SpriteSheet:
         new_sprite.image = image
 
         return new_sprite
+
+    def __len__(self):
+        return self.length

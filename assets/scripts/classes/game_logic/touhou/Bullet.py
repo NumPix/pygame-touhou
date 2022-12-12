@@ -24,10 +24,10 @@ class Bullet:
         self.animation_speed = animation_speed
 
     def velocity(self) -> Vector2:
-        return Vector2(self.speed, 0).rotate(-self.angle - 90)
+        return (Vector2.up() * self.speed).rotate(self.angle)
 
     def move(self) -> bool:
-        self.collider.position = self.position + self.collider.offset
+        self.collider.position = self.position + self.collider.offset.rotate(self.angle)
 
         self.position += self.velocity()
         self.angle += self.angular_speed * numpy.pi / 180 / FPS

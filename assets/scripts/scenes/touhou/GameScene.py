@@ -13,8 +13,6 @@ from assets.scripts.math_and_data.enviroment import *
 
 from PIL import Image
 
-from assets.scripts.math_and_data.functions import scale_sprite
-
 
 class GameScene(Scene):
     def __init__(self):
@@ -33,12 +31,20 @@ class GameScene(Scene):
 
         self.player = Player(0)
 
-        self.enemy = Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                           [np.array([250, 0]), np.array([100, 300]), np.array([0, 400]), np.array([550, 300]), np.array([250, 0])],
-                           SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
-                           Collider(20),
-                           1000, [], [],
-                           self.player)
+        self.enemies = [Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]),
+                              [np.array([0, 0]), np.array([300, 0]), np.array([0, 400]),
+                               np.array([550, 300]), np.array([550, 0])], .7,
+                              SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
+                              Collider(10, offset=Vector2.down() * 10), 2, [], [], self),
+
+                        Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]),
+                              [np.array([100, 0]), np.array([400, 0]), np.array([100, 400]),
+                               np.array([650, 300]), np.array([650, 0])], .7,
+                              SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
+                              Collider(10, offset=Vector2.down() * 10), 2, [], [], self)
+                        ]
+
+
 
     def process_input(self, events):
         for evt in events:
@@ -68,21 +74,22 @@ class GameScene(Scene):
 
     def update(self):
         self.player.update()
-        self.enemy.move()
-        self.enemy.update()
-        if not self.enemy.check_alive():
-            self.enemy.position = Vector2(-100, 100)
+        for enemy in self.enemies:
+            enemy.update()
+            enemy.move()
+            
+        for bullet in self.player.bullets:
+            on_screen = bullet.move()
+            if not on_screen:
+                self.player.bullets.remove(bullet)
 
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)
         bullet_group = pygame.sprite.RenderPlain()
         hud_group = pygame.sprite.RenderPlain()
-        player_group = pygame.sprite.RenderPlain()
-
+        entity_group = pygame.sprite.RenderPlain()
+        
         for bullet in self.player.bullets:
-            on_screen = bullet.move()
-            if not on_screen:
-                self.player.bullets.remove(bullet)
             bullet_group.add(bullet.get_sprite())
 
         hud_group.add(self.bg)
@@ -92,11 +99,22 @@ class GameScene(Scene):
         power_label = self.font.render(f"power:  {format(round(self.player.power, 2), '.2f')} / 4.00", True,
                                        (255, 255, 255)).convert_alpha()
 
-        player_group.add(self.player.get_sprite())
-        player_group.add(self.enemy.get_sprite())
+        entity_group.add(self.player.get_sprite())
 
-        player_group.draw(screen)
+        for enemy in self.enemies:
+            entity_group.add(enemy.get_sprite())
+
+        entity_group.draw(screen)
         bullet_group.draw(screen)
         hud_group.draw(screen)
         screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 25, HEIGHT - fps_label.get_rect().h))
         screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
+
+
+        ## Draw hitboxes
+
+        #for bullet in self.player.bullets:
+        #    pygame.draw.circle(screen, (255, 0, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
+        #
+        #for enemy in self.enemies:
+        #    pygame.draw.circle(screen, (0, 255, 0), enemy.collider.position.to_tuple(), enemy.collider.radius)

@@ -19,7 +19,7 @@ class Entity:
 
     def next_sprite(self, delay: int) -> None:
         if self.change_sprite_timer >= delay:
-            self.current_sprite = (self.current_sprite + 1) % self.sprite_sheet.length
+            self.current_sprite = (self.current_sprite + 1) % len(self.sprite_sheet)
             self.change_sprite_timer = 0
 
     def get_sprite(self) -> pygame.sprite.Sprite:
