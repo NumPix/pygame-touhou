@@ -20,7 +20,7 @@ class Enemy(Entity):
                  sprite_sheet: SpriteSheet,
                  collider: Collider,
                  hp: int,
-                 attack_functions: [callable, ...],
+                 attack_data: [(callable, float), ...],
                  bullet_pool,
                  scene):
 
@@ -33,7 +33,7 @@ class Enemy(Entity):
         self.max_hp: int = hp
         self.current_hp: int = self.max_hp
 
-        self.attack_functions: [callable, ...] = attack_functions
+        self.attack_data: [(callable, float), ...] = attack_data
 
         self.sprite_sheet = sprite_sheet
         self.current_sprite = 0
@@ -69,6 +69,12 @@ class Enemy(Entity):
     def update(self) -> None:
         self.change_sprite_timer += 1
 
+        for attack in self.attack_data:
+            if round(self.t, 4) == attack[1]:
+                bullets = attack[0]()
+                for bullet in bullets:
+                    self.bullets.append(bullet)
+
         if self.alive:
             self.next_sprite(4)
         else:
@@ -78,7 +84,6 @@ class Enemy(Entity):
                     self.death()
 
                 self.change_sprite_timer = 0
-
 
 
 

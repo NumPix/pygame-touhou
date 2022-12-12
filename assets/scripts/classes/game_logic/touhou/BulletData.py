@@ -1,0 +1,9 @@
+from assets.scripts.classes.game_logic.touhou.Collider import Collider
+from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
+
+
+class BulletData:
+    def __init__(self, sprite_sheet: SpriteSheet, collider: Collider, animation_speed: int = 0):
+        self.sprite_sheet = sprite_sheet
+        self.collider = collider
+        self.animation_speed = animation_speed

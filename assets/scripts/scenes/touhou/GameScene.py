@@ -2,12 +2,15 @@ import numpy as np
 import pygame
 from pygame.locals import *
 
+from assets.scripts.classes.game_logic.touhou.BulletData import BulletData
 from assets.scripts.classes.game_logic.touhou.Collider import Collider
 from assets.scripts.classes.game_logic.touhou.Enemy import Enemy
 from assets.scripts.classes.game_logic.touhou.Player import Player
 from assets.scripts.classes.hud_and_rendering.Scene import Scene
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
+
+from assets.scripts.classes.game_logic.touhou.AttackFunctions import AttackFunctions
 
 from assets.scripts.math_and_data.enviroment import *
 
@@ -29,21 +32,47 @@ class GameScene(Scene):
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 30)
 
-        self.player = Player(0)
+        self.player = Player(0, self)
 
-        self.enemies = [Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                              [np.array([0, 0]), np.array([300, 0]), np.array([0, 400]),
-                               np.array([550, 300]), np.array([550, 0])], .7,
-                              SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
-                              Collider(10, offset=Vector2.down() * 10), 2, [], [], self),
+        self.enemy_bullets = []
 
-                        Enemy(Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                              [np.array([100, 0]), np.array([400, 0]), np.array([100, 400]),
-                               np.array([650, 300]), np.array([650, 0])], .7,
-                              SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
-                              Collider(10, offset=Vector2.down() * 10), 2, [], [], self)
+        self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
+                              trajectory=[np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])],
+                              speed = .4,
+                              sprite_sheet= SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
+                              collider=Collider(10, offset=Vector2.down() * 10),
+                              hp=1,
+                              attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
+                                                                         72,
+                                                                         BulletData(SpriteSheet("assets/sprites/touhou/bullets/marisa_bullet.png").crop((32, 32)),
+                                                                                    Collider(5, offset=Vector2.up() * 20)),
+                                                                         8
+                                                                         ),
+                                            1),
+                                           (lambda: AttackFunctions.ring(self.enemies[0].position,
+                                                                         72,
+                                                                         BulletData(SpriteSheet(
+                                                                             "assets/sprites/touhou/bullets/marisa_bullet.png").crop(
+                                                                             (32, 32)),
+                                                                                    Collider(5,
+                                                                                             offset=Vector2.up() * 20)),
+                                                                         8
+                                                                         ),
+                                            1.1),
+                                           (lambda: AttackFunctions.ring(self.enemies[0].position,
+                                                                         72,
+                                                                         BulletData(SpriteSheet(
+                                                                             "assets/sprites/touhou/bullets/marisa_bullet.png").crop(
+                                                                             (32, 32)),
+                                                                                    Collider(5,
+                                                                                             offset=Vector2.up() * 20)),
+                                                                         8
+                                                                         ),
+                                            1.2)
+                                           ],
+                              bullet_pool=self.enemy_bullets,
+                              scene=self),
                         ]
-
 
 
     def process_input(self, events):
@@ -73,23 +102,34 @@ class GameScene(Scene):
             self.player.slow = False
 
     def update(self):
-        self.player.update()
         for enemy in self.enemies:
             enemy.update()
             enemy.move()
-            
+
         for bullet in self.player.bullets:
             on_screen = bullet.move()
             if not on_screen:
                 self.player.bullets.remove(bullet)
+                del bullet
+
+        for bullet in self.enemy_bullets:
+            on_screen = bullet.move()
+            if not on_screen:
+                self.enemy_bullets.remove(bullet)
+                del bullet
+
+        self.player.update()
 
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)
         bullet_group = pygame.sprite.RenderPlain()
         hud_group = pygame.sprite.RenderPlain()
         entity_group = pygame.sprite.RenderPlain()
-        
+
         for bullet in self.player.bullets:
+            bullet_group.add(bullet.get_sprite())
+
+        for bullet in self.enemy_bullets:
             bullet_group.add(bullet.get_sprite())
 
         hud_group.add(self.bg)
@@ -113,8 +153,10 @@ class GameScene(Scene):
 
         ## Draw hitboxes
 
-        #for bullet in self.player.bullets:
+        #for bullet in self.enemy_bullets:
         #    pygame.draw.circle(screen, (255, 0, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
-        #
+
+        #pygame.draw.circle(screen, (0, 255, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
+
         #for enemy in self.enemies:
         #    pygame.draw.circle(screen, (0, 255, 0), enemy.collider.position.to_tuple(), enemy.collider.radius)

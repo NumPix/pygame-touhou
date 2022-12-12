@@ -6,10 +6,11 @@ from assets.scripts.math_and_data.Vector2 import Vector2
 
 from assets.scripts.math_and_data.functions import *
 from assets.scripts.math_and_data.enviroment import *
+from assets.scripts.scenes.touhou.TitleScene import TitleScene
 
 
 class Player(Entity):
-    def __init__(self, id: int):
+    def __init__(self, id: int, scene):
         super().__init__()
         self.name: str = characters[id]['name']
         self.sprite_sheet: pygame.sprite = characters[id]['sprite-sheet']
@@ -17,6 +18,8 @@ class Player(Entity):
 
         self.position: Vector2 = Vector2((GAME_ZONE[2] + GAME_ZONE[0] + self.sprite_sheet.x) // 2, GAME_ZONE[1] + GAME_ZONE[3] - 100)
         self.speed: int = characters[id]['speed']
+
+        self.collider = Collider(20)
 
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
 
@@ -27,7 +30,16 @@ class Player(Entity):
         self.power = 0
         self.bullets = []
 
+        self.scene = scene
+
     def update(self) -> None:
+        self.collider.position = self.position
+
+        for bullet in self.scene.enemy_bullets:
+            if bullet.collider.check_collision(self.collider):
+                print('!')
+                self.scene.switch_to_scene(TitleScene())
+
         self.power = clamp(self.power + 1 / (FPS * 5), 0, 4)
         self.attack_timer += 1
         self.change_sprite_timer += 1
