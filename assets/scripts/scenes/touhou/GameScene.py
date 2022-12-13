@@ -41,7 +41,7 @@ class GameScene(Scene):
                               speed = .4,
                               sprite_sheet= SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
                               collider=Collider(10, offset=Vector2.down() * 10),
-                              hp=1,
+                              hp=50,
                               attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
                                                                          72,
                                                                          BulletData(SpriteSheet("assets/sprites/touhou/bullets/marisa_bullet.png").crop((32, 32)),
@@ -154,7 +154,7 @@ class GameScene(Scene):
         ## Draw hitboxes
 
         #for bullet in self.enemy_bullets:
-        #    pygame.draw.circle(screen, (255, 0, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
+            #pygame.draw.circle(screen, (255, 0, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
 
         #pygame.draw.circle(screen, (0, 255, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
 

@@ -1,3 +1,5 @@
+from copy import copy
+
 import numpy
 import pygame.transform
 
@@ -8,6 +10,7 @@ from assets.scripts.math_and_data.enviroment import *
 
 class Bullet:
     def __init__(self, bullet_data: BulletData,  position: Vector2, angle: float, speed: float, angular_speed=0):
+
         self.sprite_sheet = bullet_data.sprite_sheet
 
         sprite_sheet = []
@@ -21,7 +24,7 @@ class Bullet:
         self.sprite_sheet = sprite_sheet
 
         self.position: Vector2 = position
-        self.collider = bullet_data.collider
+        self.collider = copy(bullet_data.collider)
 
         self.angle: float = angle
         self.speed: float = speed

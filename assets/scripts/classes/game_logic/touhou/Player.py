@@ -19,7 +19,7 @@ class Player(Entity):
         self.position: Vector2 = Vector2((GAME_ZONE[2] + GAME_ZONE[0] + self.sprite_sheet.x) // 2, GAME_ZONE[1] + GAME_ZONE[3] - 100)
         self.speed: int = characters[id]['speed']
 
-        self.collider = Collider(20)
+        self.collider = Collider(5)
 
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
 
