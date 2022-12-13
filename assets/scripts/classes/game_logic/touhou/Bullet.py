@@ -10,6 +10,16 @@ class Bullet:
     def __init__(self, bullet_data: BulletData,  position: Vector2, angle: float, speed: float, angular_speed=0):
         self.sprite_sheet = bullet_data.sprite_sheet
 
+        sprite_sheet = []
+        for i in range(len(self.sprite_sheet)):
+            sprite = self.sprite_sheet[i]
+            new_sprite = pygame.sprite.Sprite()
+            new_sprite.image = pygame.transform.rotate(sprite.image, angle)
+            new_sprite.rect = new_sprite.image.get_rect()
+            sprite_sheet.append(new_sprite)
+
+        self.sprite_sheet = sprite_sheet
+
         self.position: Vector2 = position
         self.collider = bullet_data.collider
 
@@ -29,7 +39,7 @@ class Bullet:
 
         self.collider.position = self.position + self.collider.offset.rotate(self.angle)
 
-        self.angle += self.angular_speed * numpy.pi / 180 / FPS
+        self.angle += self.angular_speed / FPS
         sprite = self.get_sprite()
         if (self.position.x() - sprite.rect.w // 2 < GAME_ZONE[0] - 50 or
             self.position.y() - sprite.rect.h // 2 < GAME_ZONE[1] - 50) or \
@@ -49,6 +59,5 @@ class Bullet:
         sprite = self.sprite_sheet[self.current_sprite]
         sprite.rect = sprite.image.get_rect()
         sprite.rect.center = self.position.to_tuple()
-        sprite.image = pygame.transform.rotate(sprite.image, self.angle).convert_alpha()
 
         return sprite
