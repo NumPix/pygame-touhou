@@ -44,29 +44,29 @@ class GameScene(Scene):
                               hp=50,
                               attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
                                                                          72,
-                                                                         BulletData(SpriteSheet("assets/sprites/touhou/bullets/marisa_bullet.png").crop((32, 32)),
-                                                                                    Collider(5, offset=Vector2.up() * 20)),
-                                                                         8
+                                                                         BulletData(SpriteSheet("assets/sprites/touhou/bullets/bullet_0.png").crop((16, 16)),
+                                                                                    Collider(8, offset=Vector2.up() * 20)),
+                                                                         3
                                                                          ),
                                             1),
                                            (lambda: AttackFunctions.ring(self.enemies[0].position,
                                                                          72,
                                                                          BulletData(SpriteSheet(
-                                                                             "assets/sprites/touhou/bullets/marisa_bullet.png").crop(
-                                                                             (32, 32)),
-                                                                                    Collider(5,
+                                                                             "assets/sprites/touhou/bullets/bullet_0.png").crop(
+                                                                             (16, 16)),
+                                                                                    Collider(8,
                                                                                              offset=Vector2.up() * 20)),
-                                                                         8
+                                                                         3
                                                                          ),
                                             1.1),
                                            (lambda: AttackFunctions.ring(self.enemies[0].position,
                                                                          72,
                                                                          BulletData(SpriteSheet(
-                                                                             "assets/sprites/touhou/bullets/marisa_bullet.png").crop(
-                                                                             (32, 32)),
-                                                                                    Collider(5,
+                                                                             "assets/sprites/touhou/bullets/bullet_0.png").crop(
+                                                                             (16, 16)),
+                                                                                    Collider(8,
                                                                                              offset=Vector2.up() * 20)),
-                                                                         8
+                                                                         3
                                                                          ),
                                             1.2)
                                            ],
@@ -156,7 +156,7 @@ class GameScene(Scene):
         #for bullet in self.enemy_bullets:
             #pygame.draw.circle(screen, (255, 0, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
 
-        #pygame.draw.circle(screen, (0, 255, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
+        pygame.draw.circle(screen, (255, 0, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
 
         #for enemy in self.enemies:
         #    pygame.draw.circle(screen, (0, 255, 0), enemy.collider.position.to_tuple(), enemy.collider.radius)
