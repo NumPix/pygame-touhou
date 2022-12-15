@@ -36,6 +36,10 @@ class GameScene(Scene):
 
         self.enemy_bullets = []
 
+        self.bullet_group = pygame.sprite.RenderPlain()
+        self.hud_group = pygame.sprite.RenderPlain()
+        self.entity_group = pygame.sprite.RenderPlain()
+
         self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
                               trajectory=[np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])],
                               speed = .4,
@@ -45,7 +49,7 @@ class GameScene(Scene):
                               attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
                                                                          72,
                                                                          BulletData(SpriteSheet("assets/sprites/touhou/bullets/bullet_0.png").crop((16, 16)),
-                                                                                    Collider(8, offset=Vector2.up() * 20)),
+                                                                                    Collider(8)),
                                                                          3
                                                                          ),
                                             1),
@@ -54,8 +58,7 @@ class GameScene(Scene):
                                                                          BulletData(SpriteSheet(
                                                                              "assets/sprites/touhou/bullets/bullet_0.png").crop(
                                                                              (16, 16)),
-                                                                                    Collider(8,
-                                                                                             offset=Vector2.up() * 20)),
+                                                                                    Collider(8)),
                                                                          3
                                                                          ),
                                             1.1),
@@ -64,8 +67,7 @@ class GameScene(Scene):
                                                                          BulletData(SpriteSheet(
                                                                              "assets/sprites/touhou/bullets/bullet_0.png").crop(
                                                                              (16, 16)),
-                                                                                    Collider(8,
-                                                                                             offset=Vector2.up() * 20)),
+                                                                                    Collider(8)),
                                                                          3
                                                                          ),
                                             1.2)
@@ -122,33 +124,34 @@ class GameScene(Scene):
 
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)
-        bullet_group = pygame.sprite.RenderPlain()
-        hud_group = pygame.sprite.RenderPlain()
-        entity_group = pygame.sprite.RenderPlain()
 
         for bullet in self.player.bullets:
-            bullet_group.add(bullet.get_sprite())
+            self.bullet_group.add(bullet.get_sprite())
 
         for bullet in self.enemy_bullets:
-            bullet_group.add(bullet.get_sprite())
+            self.bullet_group.add(bullet.get_sprite())
 
-        hud_group.add(self.bg)
+        self.hud_group.add(self.bg)
 
         fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
                                      (255, 255, 255)).convert_alpha()
         power_label = self.font.render(f"power:  {format(round(self.player.power, 2), '.2f')} / 4.00", True,
                                        (255, 255, 255)).convert_alpha()
 
-        entity_group.add(self.player.get_sprite())
+        self.entity_group.add(self.player.get_sprite())
 
         for enemy in self.enemies:
-            entity_group.add(enemy.get_sprite())
+            self.entity_group.add(enemy.get_sprite())
 
-        entity_group.draw(screen)
-        bullet_group.draw(screen)
-        hud_group.draw(screen)
+        self.entity_group.draw(screen)
+        self.bullet_group.draw(screen)
+        self.hud_group.draw(screen)
         screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 25, HEIGHT - fps_label.get_rect().h))
         screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
+
+        self.entity_group.empty()
+        self.bullet_group.empty()
+        self.bullet_group.empty()
 
 
         ## Draw hitboxes

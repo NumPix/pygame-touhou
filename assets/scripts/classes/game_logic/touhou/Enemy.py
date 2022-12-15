@@ -93,6 +93,7 @@ class Enemy(Entity):
                 self.target.bullets.remove(bullet)
                 del bullet
 
+
     def get_damage(self, damage: int) -> None:
         self.current_hp -= damage
         if self.current_hp <= 0 and self.alive:
