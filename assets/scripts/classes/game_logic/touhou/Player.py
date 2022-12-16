@@ -59,9 +59,11 @@ class Player(Entity):
         sprite = self.get_sprite()
 
         if self.reviving:
+            self.invincibility_timer += 1 * self.scene.FPS_RATIO
             self.position += Vector2.up() * 2
             if self.position.y() <= GAME_ZONE[3] + GAME_ZONE[1] - 100:
                 self.reviving = False
+                self.invincibility_timer = 0
         else:
             self.position = (self.position + direction_vector.normalize() * self.speed * self.scene.FPS_RATIO * (.5 if self.slow else 1)) \
                 .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,

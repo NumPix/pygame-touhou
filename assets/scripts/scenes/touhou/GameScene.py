@@ -144,8 +144,11 @@ class GameScene(Scene):
 
         hp_label = self.font.render(f"Player:   {'★' * self.player.hp}", True, (255, 255, 255)).convert_alpha()
 
+        player_sprite = self.player.get_sprite()
+        if self.player.reviving and self.player.invincibility_timer % 40 > 30:
+            player_sprite.image.set_alpha(170)
 
-        self.entity_group.add(self.player.get_sprite())
+        self.entity_group.add(player_sprite)
 
         for enemy in self.enemies:
             self.entity_group.add(enemy.get_sprite())
