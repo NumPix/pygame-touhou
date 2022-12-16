@@ -21,6 +21,10 @@ class Player(Entity):
 
         self.collider = Collider(5)
 
+        self.points = 0
+        self.hp = 6
+        self.invincibility = False
+
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
 
         self.change_sprite_timer = 0
@@ -37,17 +41,19 @@ class Player(Entity):
 
         for bullet in self.scene.enemy_bullets:
             if bullet.collider.check_collision(self.collider):
-                print('!')
-                self.scene.switch_to_scene(TitleScene())
+                self.get_damage()
 
-        self.power = clamp(self.power + 1 / (FPS * 5), 0, 4)
+        for enemy in self.scene.enemies:
+            if enemy.collider.check_collision(self.collider):
+                self.get_damage()
+
         self.attack_timer += 1
         self.change_sprite_timer += 1
         self.next_sprite(5)
 
     def move(self, direction_vector: Vector2) -> None:
         sprite = self.get_sprite()
-        self.position = (self.position + direction_vector.normalize() * self.speed * (.5 if self.slow else 1)) \
+        self.position = (self.position + direction_vector.normalize() * self.speed * self.scene.FPS_RATIO * (.5 if self.slow else 1)) \
             .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
                    GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
 
@@ -55,3 +61,8 @@ class Player(Entity):
         if self.attack_timer >= 3:
             self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
+
+    def get_damage(self):
+        self.hp -= 1
+        if self.hp < 0:
+            self.scene.switch_to_scene(TitleScene())

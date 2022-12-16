@@ -21,16 +21,16 @@ class GameScene(Scene):
     def __init__(self):
         super().__init__()
         self.GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
+        self.FPS_RATIO = 1
 
         self.background = Image.open("assets/sprites/touhou/backgrounds/background.png").convert("RGBA")
         self.background.paste(Image.new("RGBA", (GAME_ZONE[2], GAME_ZONE[3]), (255, 255, 255, 0)),
                               (GAME_ZONE[0], GAME_ZONE[1]))
-
         self.bg = pygame.sprite.Sprite()
         self.bg.rect = Rect(0, 0, WIDTH, HEIGHT)
         self.bg.image = pygame.image.fromstring(self.background.tobytes(), self.background.size, self.background.mode)
 
-        self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 30)
+        self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 36)
 
         self.player = Player(0, self)
 
@@ -44,7 +44,7 @@ class GameScene(Scene):
                               trajectory=[np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])],
                               speed = .4,
                               sprite_sheet= SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
-                              collider=Collider(10, offset=Vector2.down() * 10),
+                              collider=Collider(15),
                               hp=50,
                               attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
                                                                          72,
@@ -109,13 +109,13 @@ class GameScene(Scene):
             enemy.move()
 
         for bullet in self.player.bullets:
-            on_screen = bullet.move()
+            on_screen = bullet.move(self.FPS_RATIO)
             if not on_screen:
                 self.player.bullets.remove(bullet)
                 del bullet
 
         for bullet in self.enemy_bullets:
-            on_screen = bullet.move()
+            on_screen = bullet.move(self.FPS_RATIO)
             if not on_screen:
                 self.enemy_bullets.remove(bullet)
                 del bullet
@@ -123,6 +123,8 @@ class GameScene(Scene):
         self.player.update()
 
     def render(self, screen, clock):
+        self.FPS_RATIO = FPS / clock.get_fps()
+
         screen.fill((0, 0, 0), rect=GAME_ZONE)
 
         for bullet in self.player.bullets:
@@ -135,8 +137,9 @@ class GameScene(Scene):
 
         fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
                                      (255, 255, 255)).convert_alpha()
-        power_label = self.font.render(f"power:  {format(round(self.player.power, 2), '.2f')} / 4.00", True,
+        power_label = self.font.render(f"Power:    {format(round(self.player.power, 2), '.2f')} / 4.00", True,
                                        (255, 255, 255)).convert_alpha()
+        score_label = self.font.render(f"Score:    {format(self.player.points, '08d')}", True, (255, 255, 255)).convert_alpha()
 
         self.entity_group.add(self.player.get_sprite())
 
@@ -146,8 +149,10 @@ class GameScene(Scene):
         self.entity_group.draw(screen)
         self.bullet_group.draw(screen)
         self.hud_group.draw(screen)
-        screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 25, HEIGHT - fps_label.get_rect().h))
+
         screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
+        screen.blit(score_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 230))
+        screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 30, HEIGHT - fps_label.get_rect().h))
 
         self.entity_group.empty()
         self.bullet_group.empty()
@@ -157,7 +162,10 @@ class GameScene(Scene):
         ## Draw hitboxes
 
         #for bullet in self.enemy_bullets:
-            #pygame.draw.circle(screen, (255, 0, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
+            #pygame.draw.circle(screen, (0, 255, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
+
+        #for bullet in self.player.bullets:
+        #    pygame.draw.circle(screen, (0, 255, 0), bullet.collider.position.to_tuple(), bullet.collider.radius)
 
         pygame.draw.circle(screen, (255, 0, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
 

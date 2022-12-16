@@ -64,16 +64,17 @@ class Enemy(Entity):
         self.position = self.start_position + Vector2(coords=BSpline.curve(self.trajectory, self.t))
         self.t += self.speed / FPS
         if self.t > len(self.trajectory) - 1:
-            self.t = 0
+            self.death()
 
     def update(self) -> None:
         self.change_sprite_timer += 1
 
-        for attack in self.attack_data:
-            if round(self.t, 4) == attack[1]:
-                bullets = attack[0]()
+        if self.attack_data:
+            if self.t >= self.attack_data[0][1]:
+                bullets = self.attack_data[0][0]()
                 for bullet in bullets:
                     self.bullets.append(bullet)
+                self.attack_data.pop(0)
 
         if self.alive:
             self.next_sprite(4)
@@ -89,6 +90,7 @@ class Enemy(Entity):
 
         for bullet in self.target.bullets:
             if self.collider.check_collision(bullet.collider):
+                self.target.points += 100
                 self.get_damage(bullet.damage)
                 self.target.bullets.remove(bullet)
                 del bullet
@@ -102,5 +104,6 @@ class Enemy(Entity):
             self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51) for n in range(5)]
 
     def death(self):
+        self.target.points += 10000
         self.scene.enemies.remove(self)
         del self

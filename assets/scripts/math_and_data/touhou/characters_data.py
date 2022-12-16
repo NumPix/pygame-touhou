@@ -13,7 +13,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     current_power = power_levels[int((len(power_levels) - 1) * power * 20 / 100)]
 
-    bullet_data = BulletData(characters[0]["bullet-sprite-sheet"], Collider(5, offset=Vector2.up() * 40))
+    bullet_data = BulletData(characters[0]["bullet-sprite-sheet"], Collider(5, offset=Vector2.up() * 10))
 
     for i in range(-current_power, current_power + 1):
         i /= 2

@@ -37,8 +37,8 @@ class Bullet:
     def velocity(self) -> Vector2:
         return (Vector2.up() * self.speed).rotate(self.angle)
 
-    def move(self) -> bool:
-        self.position += self.velocity()
+    def move(self, fps_ratio) -> bool:
+        self.position += self.velocity() * fps_ratio
 
         self.collider.position = self.position + self.collider.offset.rotate(self.angle)
 

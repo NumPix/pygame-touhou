@@ -18,30 +18,41 @@ class MenuScene(Scene):
         another_button_sprites = text_button_sprites("Another game", self.font, (255, 255, 255), (100, 100, 100),
                                                      (100, 100, 100))
 
+        exit_button_sprites = text_button_sprites("Exit", self.font, (255, 255, 255),
+                                                     (100, 100, 100),
+                                                     (100, 100, 100))
+
         touhou_button_size = touhou_button_sprites[0].get_size()
         another_button_size = another_button_sprites[0].get_size()
+        exit_button_size = exit_button_sprites[0].get_size()
 
         self.play_touhou_button = Button(touhou_button_sprites,
                                          pygame.Rect(100, 200, touhou_button_size[0], touhou_button_size[1]),
                                          on_mouse_click=self.switch_to_touhou)
 
         self.play_another_game_button = Button(another_button_sprites,
-                                               pygame.Rect(100, 300, another_button_size[0], another_button_size[1]),
+                                               pygame.Rect(100, 280, another_button_size[0], another_button_size[1]),
                                                on_mouse_click=self.switch_to_another_game)
+
+        self.exit_button = Button(exit_button_sprites,
+                                  pygame.Rect(100, 360, exit_button_size[0], exit_button_size[1]),
+                                  on_mouse_click=self.terminate)
 
     def render(self, screen: pygame.Surface, clock):
         screen.fill((80, 80, 100))
 
         self.play_touhou_button.draw(screen)
         self.play_another_game_button.draw(screen)
+        self.exit_button.draw(screen)
 
     def process_input(self, events):
         for evt in events:
             if evt.type == QUIT:
-                pygame.quit()
+                self.terminate()
 
         self.play_touhou_button.check_state(events)
         self.play_another_game_button.check_state(events)
+        self.exit_button.check_state(events)
 
     def switch_to_touhou(self):
         import assets.scripts.scenes.touhou.TitleScene as thTitleScene
@@ -50,3 +61,7 @@ class MenuScene(Scene):
     def switch_to_another_game(self):
         import assets.scripts.scenes.another_game.TitleScene as agTitleScene
         self.switch_to_scene(agTitleScene.TitleScene())
+
+    def terminate(self):
+        pygame.quit()
+        exit()
