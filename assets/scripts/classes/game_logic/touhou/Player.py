@@ -22,8 +22,9 @@ class Player(Entity):
         self.collider = Collider(5)
 
         self.points = 0
-        self.hp = 6
-        self.invincibility = False
+        self.hp = 2
+        self.reviving = False
+        self.invincibility_timer = 0
 
         self.sprite_size = Vector2(self.sprite_sheet.x, self.sprite_sheet.y)
 
@@ -39,13 +40,16 @@ class Player(Entity):
     def update(self) -> None:
         self.collider.position = self.position
 
-        for bullet in self.scene.enemy_bullets:
-            if bullet.collider.check_collision(self.collider):
-                self.get_damage()
+        if not self.reviving:
+            for bullet in self.scene.enemy_bullets:
+                if bullet.collider.check_collision(self.collider):
+                    self.get_damage()
+                    break
 
-        for enemy in self.scene.enemies:
-            if enemy.collider.check_collision(self.collider):
-                self.get_damage()
+            for enemy in self.scene.enemies:
+                if enemy.collider.check_collision(self.collider):
+                    self.get_damage()
+                    break
 
         self.attack_timer += 1
         self.change_sprite_timer += 1
@@ -53,9 +57,15 @@ class Player(Entity):
 
     def move(self, direction_vector: Vector2) -> None:
         sprite = self.get_sprite()
-        self.position = (self.position + direction_vector.normalize() * self.speed * self.scene.FPS_RATIO * (.5 if self.slow else 1)) \
-            .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
-                   GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
+
+        if self.reviving:
+            self.position += Vector2.up() * 2
+            if self.position.y() <= GAME_ZONE[3] + GAME_ZONE[1] - 100:
+                self.reviving = False
+        else:
+            self.position = (self.position + direction_vector.normalize() * self.speed * self.scene.FPS_RATIO * (.5 if self.slow else 1)) \
+                .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
+                       GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
 
     def shoot(self) -> None:
         if self.attack_timer >= 3:
@@ -64,5 +74,7 @@ class Player(Entity):
 
     def get_damage(self):
         self.hp -= 1
+        self.reviving = True
+        self.position = Vector2((GAME_ZONE[2] + GAME_ZONE[0]) // 2, HEIGHT + 80)
         if self.hp < 0:
             self.scene.switch_to_scene(TitleScene())

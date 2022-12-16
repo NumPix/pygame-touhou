@@ -137,9 +137,13 @@ class GameScene(Scene):
 
         fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
                                      (255, 255, 255)).convert_alpha()
+        score_label = self.font.render(f"Score:    {format(self.player.points, '08d')}", True, (255, 255, 255)).convert_alpha()
+
         power_label = self.font.render(f"Power:    {format(round(self.player.power, 2), '.2f')} / 4.00", True,
                                        (255, 255, 255)).convert_alpha()
-        score_label = self.font.render(f"Score:    {format(self.player.points, '08d')}", True, (255, 255, 255)).convert_alpha()
+
+        hp_label = self.font.render(f"Player:   {'★' * self.player.hp}", True, (255, 255, 255)).convert_alpha()
+
 
         self.entity_group.add(self.player.get_sprite())
 
@@ -148,16 +152,6 @@ class GameScene(Scene):
 
         self.entity_group.draw(screen)
         self.bullet_group.draw(screen)
-        self.hud_group.draw(screen)
-
-        screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
-        screen.blit(score_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 230))
-        screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 30, HEIGHT - fps_label.get_rect().h))
-
-        self.entity_group.empty()
-        self.bullet_group.empty()
-        self.bullet_group.empty()
-
 
         ## Draw hitboxes
 
@@ -171,3 +165,15 @@ class GameScene(Scene):
 
         #for enemy in self.enemies:
         #    pygame.draw.circle(screen, (0, 255, 0), enemy.collider.position.to_tuple(), enemy.collider.radius)
+
+        self.hud_group.draw(screen)
+
+
+        screen.blit(score_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 200))
+        screen.blit(hp_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
+        screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 370))
+        screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 30, HEIGHT - fps_label.get_rect().h))
+
+        self.entity_group.empty()
+        self.bullet_group.empty()
+        self.bullet_group.empty()
