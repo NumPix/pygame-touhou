@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 from assets.scripts.math_and_data.enviroment import *
-import asyncio
 
 pygame.init()
 screen = pygame.display.set_mode(SIZE, DOUBLEBUF, 16)
@@ -13,10 +12,9 @@ active_scene = MenuScene.MenuScene()
 
 ticksLastFrame = pygame.time.get_ticks()
 
-while active_scene is not None:
-    t = pygame.time.get_ticks()
-    delta_time = (t - ticksLastFrame) / 1000
+delta_time = 1 / FPS
 
+while active_scene is not None:
     active_scene.process_input(pygame.event.get())
     active_scene.update(delta_time)
     active_scene.render(screen, clock)
@@ -24,6 +22,4 @@ while active_scene is not None:
     active_scene = active_scene.next
 
     pygame.display.flip()
-    clock.tick(FPS)
-
-    ticksLastFrame = t
+    delta_time = clock.tick(FPS) / 1000

@@ -69,7 +69,7 @@ class Enemy(Entity):
             self.death()
 
     def update(self) -> None:
-        self.change_sprite_timer += 1
+        self.change_sprite_timer += 1 * 60 * self.scene.delta_time
 
         if self.attack_data and self.attack_count < len(self.attack_data):
             if self.t >= self.attack_data[self.attack_count][1]:
@@ -100,7 +100,7 @@ class Enemy(Entity):
         if self.current_hp <= 0 and self.alive:
             self.alive = False
             self.current_sprite = 0
-            self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51) for n in range(5)]
+            self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51).image for n in range(5)]
 
     def death(self):
         if self.current_sprite <= 0:

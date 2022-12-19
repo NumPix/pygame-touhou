@@ -38,8 +38,6 @@ class Player(Entity):
         self.scene = scene
 
     def update(self) -> None:
-        self.collider.position = self.position
-
         delta_time = self.scene.delta_time
 
         if not self.reviving:
@@ -53,12 +51,12 @@ class Player(Entity):
                     self.get_damage()
                     break
 
-        self.attack_timer += 2.3 * 60 * delta_time
+        self.attack_timer += 2.5 * 60 * delta_time
         self.change_sprite_timer += 1 * 60 * delta_time
-        self.next_sprite(5 * 60 * delta_time)
+        self.next_sprite(5)
 
     def move(self, direction_vector: Vector2) -> None:
-        sprite = self.get_sprite()
+        sprite_rect = self.get_sprite().rect
 
         delta_time = self.scene.delta_time
 
@@ -70,8 +68,10 @@ class Player(Entity):
                 self.invincibility_timer = 0
         else:
             self.position = (self.position + direction_vector.normalize() * self.speed * delta_time * (.5 if self.slow else 1)) \
-                .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
-                       GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
+                .clamp(GAME_ZONE[0] + sprite_rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite_rect.w // 2,
+                       GAME_ZONE[1] + sprite_rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite_rect.h // 2)
+
+        self.collider.position = self.position
 
     def shoot(self) -> None:
         if self.attack_timer >= 3:

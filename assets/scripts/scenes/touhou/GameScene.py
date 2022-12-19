@@ -41,36 +41,18 @@ class GameScene(Scene):
         self.entity_group = pygame.sprite.RenderPlain()
 
         self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                              trajectory=[np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])],
+                              trajectory=[np.array([0, 100]), np.array([550, 100]), np.array([0, 100]), np.array([550, 100]), np.array([0, 100])],
                               speed=.4,
                               sprite_sheet= SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
                               collider=Collider(15),
                               hp=50,
                               attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
-                                                                         72,
+                                                                         50,
                                                                          BulletData(SpriteSheet("assets/sprites/touhou/bullets/bullet_0.png").crop((16, 16)),
                                                                                     Collider(8)),
                                                                          150
                                                                          ),
-                                            1),
-                                           (lambda: AttackFunctions.ring(self.enemies[0].position,
-                                                                         72,
-                                                                         BulletData(SpriteSheet(
-                                                                             "assets/sprites/touhou/bullets/bullet_0.png").crop(
-                                                                             (16, 16)),
-                                                                                    Collider(8)),
-                                                                         150
-                                                                         ),
-                                            1.1),
-                                           (lambda: AttackFunctions.ring(self.enemies[0].position,
-                                                                         72,
-                                                                         BulletData(SpriteSheet(
-                                                                             "assets/sprites/touhou/bullets/bullet_0.png").crop(
-                                                                             (16, 16)),
-                                                                                    Collider(8)),
-                                                                         150
-                                                                         ),
-                                            1.2)
+                                            1 + n / 10) for n in range(10)
                                            ],
                               bullet_pool=self.enemy_bullets,
                               scene=self),
@@ -134,7 +116,7 @@ class GameScene(Scene):
 
         self.hud_group.add(self.bg)
 
-        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps {format(round(self.delta_time, 4), '.4f')} dt", True,
+        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
                                      (255, 255, 255)).convert_alpha()
 
         score_label = self.font.render(f"Score:    {format(self.player.points, '08d')}", True, (255, 255, 255)).convert_alpha()

@@ -26,6 +26,7 @@ class Entity:
 
     def get_sprite(self) -> pygame.sprite.Sprite:
         self.sprite.image = self.sprite_sheet[self.current_sprite]
+
         self.sprite.rect = self.sprite.image.get_rect()
         self.sprite.rect.center = self.position.to_tuple()
 
