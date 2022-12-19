@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import numpy
 import pygame
 
 
@@ -18,18 +20,15 @@ class SpriteSheet:
 
         return self
 
-    def __getitem__(self, index) -> pygame.sprite.Sprite:
+    def __getitem__(self, index) -> pygame.surface:
         ind_y = index // self.x
         ind_x = index % self.x
 
         image = pygame.Surface(self.sprite_size, pygame.SRCALPHA).convert_alpha()
-        new_sprite = pygame.sprite.Sprite()
         rect = pygame.Rect(ind_x * self.sprite_size[0], ind_y * self.sprite_size[1], self.sprite_size[0], self.sprite_size[1])
         image.blit(self.sheet, (0, 0), rect)
 
-        new_sprite.image = image
-
-        return new_sprite
+        return image
 
     def __len__(self):
         return self.length

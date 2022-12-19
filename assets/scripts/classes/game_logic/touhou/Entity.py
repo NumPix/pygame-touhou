@@ -14,17 +14,19 @@ class Entity:
         self.current_sprite = 0
         self.change_sprite_timer = 0
 
+        self.sprite = pygame.sprite.Sprite()
+
     def update(self) -> None:
         pass
 
     def next_sprite(self, delay: int) -> None:
         if self.change_sprite_timer >= delay:
-            self.current_sprite = (self.current_sprite + 1) % len(self.sprite_sheet)
+            self.current_sprite = (self.current_sprite + 1) % self.sprite_sheet.length
             self.change_sprite_timer = 0
 
     def get_sprite(self) -> pygame.sprite.Sprite:
-        sprite = self.sprite_sheet[self.current_sprite]
-        sprite.rect = sprite.image.get_rect()
-        sprite.rect.center = self.position.to_tuple()
+        self.sprite.image = self.sprite_sheet[self.current_sprite]
+        self.sprite.rect = self.sprite.image.get_rect()
+        self.sprite.rect.center = self.position.to_tuple()
 
-        return sprite
+        return self.sprite

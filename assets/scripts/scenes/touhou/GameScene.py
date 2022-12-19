@@ -21,7 +21,7 @@ class GameScene(Scene):
     def __init__(self):
         super().__init__()
         self.GAME_ZONE = tuple(map(int, os.getenv("GAME_ZONE").split(', ')))
-        self.FPS_RATIO = 1
+        self.delta_time = 0.001
 
         self.background = Image.open("assets/sprites/touhou/backgrounds/background.png").convert("RGBA")
         self.background.paste(Image.new("RGBA", (GAME_ZONE[2], GAME_ZONE[3]), (255, 255, 255, 0)),
@@ -42,7 +42,7 @@ class GameScene(Scene):
 
         self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
                               trajectory=[np.array([0, 0]), np.array([300, 0]), np.array([0, 400]), np.array([550, 300]), np.array([550, 0])],
-                              speed = .4,
+                              speed=.4,
                               sprite_sheet= SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
                               collider=Collider(15),
                               hp=50,
@@ -50,7 +50,7 @@ class GameScene(Scene):
                                                                          72,
                                                                          BulletData(SpriteSheet("assets/sprites/touhou/bullets/bullet_0.png").crop((16, 16)),
                                                                                     Collider(8)),
-                                                                         3
+                                                                         150
                                                                          ),
                                             1),
                                            (lambda: AttackFunctions.ring(self.enemies[0].position,
@@ -59,7 +59,7 @@ class GameScene(Scene):
                                                                              "assets/sprites/touhou/bullets/bullet_0.png").crop(
                                                                              (16, 16)),
                                                                                     Collider(8)),
-                                                                         3
+                                                                         150
                                                                          ),
                                             1.1),
                                            (lambda: AttackFunctions.ring(self.enemies[0].position,
@@ -68,7 +68,7 @@ class GameScene(Scene):
                                                                              "assets/sprites/touhou/bullets/bullet_0.png").crop(
                                                                              (16, 16)),
                                                                                     Collider(8)),
-                                                                         3
+                                                                         150
                                                                          ),
                                             1.2)
                                            ],
@@ -103,19 +103,21 @@ class GameScene(Scene):
         else:
             self.player.slow = False
 
-    def update(self):
+    def update(self, delta_time):
+        self.delta_time = delta_time
+
         for enemy in self.enemies:
             enemy.update()
             enemy.move()
 
         for bullet in self.player.bullets:
-            on_screen = bullet.move(self.FPS_RATIO)
+            on_screen = bullet.move(delta_time)
             if not on_screen:
                 self.player.bullets.remove(bullet)
                 del bullet
 
         for bullet in self.enemy_bullets:
-            on_screen = bullet.move(self.FPS_RATIO)
+            on_screen = bullet.move(delta_time)
             if not on_screen:
                 self.enemy_bullets.remove(bullet)
                 del bullet
@@ -123,8 +125,6 @@ class GameScene(Scene):
         self.player.update()
 
     def render(self, screen, clock):
-        self.FPS_RATIO = FPS / clock.get_fps()
-
         screen.fill((0, 0, 0), rect=GAME_ZONE)
 
         for bullet in self.player.bullets:

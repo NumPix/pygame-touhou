@@ -17,7 +17,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     for i in range(-current_power, current_power + 1):
         i /= 2
-        bullet = PlayerBullet(bullet_data ,fire_point, delta_angle * i, 30, damage=1)
+        bullet = PlayerBullet(bullet_data, fire_point, delta_angle * i, 1800, damage=1)
         bullets.append(bullet)
 
     return bullets
@@ -26,7 +26,7 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 characters = {
     0: {
         "name": "Marisa",
-        "speed": 7,
+        "speed": 300,
         "sprite-sheet": SpriteSheet("assets/sprites/touhou/entities/marisa_forward.png").crop((25, 50)),
         "bullet-sprite-sheet": SpriteSheet("assets/sprites/touhou/bullets/marisa_bullet.png").crop((32, 32)),
         "attack-function": marisa_base_attack

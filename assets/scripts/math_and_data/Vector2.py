@@ -12,10 +12,10 @@ class Vector2:
             self.coords = coords
 
     def x(self) -> float:
-        return self.coords[0]
+        return self.coords.item(0)
 
     def y(self) -> float:
-        return self.coords[1]
+        return self.coords.item(1)
 
     def __add__(self, other: float | Vector2) -> Vector2:
         if type(other) == Vector2:

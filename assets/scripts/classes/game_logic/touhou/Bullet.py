@@ -17,7 +17,7 @@ class Bullet:
         for i in range(len(self.sprite_sheet)):
             sprite = self.sprite_sheet[i]
             new_sprite = pygame.sprite.Sprite()
-            new_sprite.image = pygame.transform.rotate(sprite.image, angle)
+            new_sprite.image = pygame.transform.rotate(sprite, angle)
             new_sprite.rect = new_sprite.image.get_rect()
             sprite_sheet.append(new_sprite)
 
@@ -37,12 +37,12 @@ class Bullet:
     def velocity(self) -> Vector2:
         return (Vector2.up() * self.speed).rotate(self.angle)
 
-    def move(self, fps_ratio) -> bool:
-        self.position += self.velocity() * fps_ratio
+    def move(self, delta_time) -> bool:
+        self.position += self.velocity() * delta_time
 
         self.collider.position = self.position + self.collider.offset.rotate(self.angle)
 
-        self.angle += self.angular_speed / FPS
+        self.angle += self.angular_speed * delta_time
         sprite = self.get_sprite()
         if (self.position.x() - sprite.rect.w // 2 < GAME_ZONE[0] - 50 or
             self.position.y() - sprite.rect.h // 2 < GAME_ZONE[1] - 50) or \

@@ -40,6 +40,8 @@ class Player(Entity):
     def update(self) -> None:
         self.collider.position = self.position
 
+        delta_time = self.scene.delta_time
+
         if not self.reviving:
             for bullet in self.scene.enemy_bullets:
                 if bullet.collider.check_collision(self.collider):
@@ -51,21 +53,23 @@ class Player(Entity):
                     self.get_damage()
                     break
 
-        self.attack_timer += 1
-        self.change_sprite_timer += 1
+        self.attack_timer += FPS * delta_time
+        self.change_sprite_timer += FPS * delta_time
         self.next_sprite(5)
 
     def move(self, direction_vector: Vector2) -> None:
         sprite = self.get_sprite()
 
+        delta_time = self.scene.delta_time
+
         if self.reviving:
-            self.invincibility_timer += 1 * self.scene.FPS_RATIO
-            self.position += Vector2.up() * 2
+            self.invincibility_timer += 1 * delta_time
+            self.position += Vector2.up() * 2 * delta_time
             if self.position.y() <= GAME_ZONE[3] + GAME_ZONE[1] - 100:
                 self.reviving = False
                 self.invincibility_timer = 0
         else:
-            self.position = (self.position + direction_vector.normalize() * self.speed * self.scene.FPS_RATIO * (.5 if self.slow else 1)) \
+            self.position = (self.position + direction_vector.normalize() * self.speed * delta_time * (.5 if self.slow else 1)) \
                 .clamp(GAME_ZONE[0] + sprite.rect.w // 2, (GAME_ZONE[2] + GAME_ZONE[0]) - sprite.rect.w // 2,
                        GAME_ZONE[1] + sprite.rect.h // 2, (GAME_ZONE[3] + GAME_ZONE[1]) - sprite.rect.h // 2)
 

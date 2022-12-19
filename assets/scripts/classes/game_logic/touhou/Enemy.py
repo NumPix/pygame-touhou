@@ -52,7 +52,6 @@ class Enemy(Entity):
 
         self.alive = True
 
-
         self.speed = speed
 
     def move(self) -> None:
@@ -61,8 +60,10 @@ class Enemy(Entity):
 
         self.collider.position = self.position + self.collider.offset
 
+        delta_time = self.scene.delta_time
+
         self.position = self.start_position + Vector2(coords=BSpline.curve(self.trajectory, self.t))
-        self.t += self.speed / FPS
+        self.t += self.speed * delta_time
         if self.t > len(self.trajectory) - 1:
             self.death()
 

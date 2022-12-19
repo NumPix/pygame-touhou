@@ -5,7 +5,7 @@ class Scene:
     def process_input(self, events) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, deltatime) -> None:
         pass
 
     def render(self, screen, clock) -> None:
