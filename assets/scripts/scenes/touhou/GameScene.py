@@ -28,7 +28,7 @@ class GameScene(Scene):
                               (GAME_ZONE[0], GAME_ZONE[1]))
         self.bg = pygame.sprite.Sprite()
         self.bg.rect = Rect(0, 0, WIDTH, HEIGHT)
-        self.bg.image = pygame.image.fromstring(self.background.tobytes(), self.background.size, self.background.mode)
+        self.bg.image = pygame.image.fromstring(self.background.tobytes(), self.background.size, self.background.mode).convert_alpha()
 
         self.font = pygame.font.Font('assets/fonts/DFPPOPCorn-W12.ttf', 36)
 
@@ -75,7 +75,6 @@ class GameScene(Scene):
                               bullet_pool=self.enemy_bullets,
                               scene=self),
                         ]
-
 
     def process_input(self, events):
         for evt in events:
@@ -135,8 +134,9 @@ class GameScene(Scene):
 
         self.hud_group.add(self.bg)
 
-        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
+        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps {format(round(self.delta_time, 4), '.4f')} dt", True,
                                      (255, 255, 255)).convert_alpha()
+
         score_label = self.font.render(f"Score:    {format(self.player.points, '08d')}", True, (255, 255, 255)).convert_alpha()
 
         power_label = self.font.render(f"Power:    {format(round(self.player.power, 2), '.2f')} / 4.00", True,
@@ -180,3 +180,4 @@ class GameScene(Scene):
         self.entity_group.empty()
         self.bullet_group.empty()
         self.bullet_group.empty()
+        self.hud_group.empty()

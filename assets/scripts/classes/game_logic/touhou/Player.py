@@ -53,9 +53,9 @@ class Player(Entity):
                     self.get_damage()
                     break
 
-        self.attack_timer += FPS * delta_time
-        self.change_sprite_timer += FPS * delta_time
-        self.next_sprite(5)
+        self.attack_timer += 2.3 * 60 * delta_time
+        self.change_sprite_timer += 1 * 60 * delta_time
+        self.next_sprite(5 * 60 * delta_time)
 
     def move(self, direction_vector: Vector2) -> None:
         sprite = self.get_sprite()
@@ -63,8 +63,8 @@ class Player(Entity):
         delta_time = self.scene.delta_time
 
         if self.reviving:
-            self.invincibility_timer += 1 * delta_time
-            self.position += Vector2.up() * 2 * delta_time
+            self.invincibility_timer += 1 * 60 * delta_time
+            self.position += Vector2.up() * 2 * 60 * delta_time
             if self.position.y() <= GAME_ZONE[3] + GAME_ZONE[1] - 100:
                 self.reviving = False
                 self.invincibility_timer = 0

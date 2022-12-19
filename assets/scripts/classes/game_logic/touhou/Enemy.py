@@ -34,6 +34,7 @@ class Enemy(Entity):
         self.current_hp: int = self.max_hp
 
         self.attack_data: [(callable, float), ...] = attack_data
+        self.attack_count = 0
 
         self.sprite_sheet = sprite_sheet
         self.current_sprite = 0
@@ -70,12 +71,12 @@ class Enemy(Entity):
     def update(self) -> None:
         self.change_sprite_timer += 1
 
-        if self.attack_data:
-            if self.t >= self.attack_data[0][1]:
-                bullets = self.attack_data[0][0]()
+        if self.attack_data and self.attack_count < len(self.attack_data):
+            if self.t >= self.attack_data[self.attack_count][1]:
+                bullets = self.attack_data[self.attack_count][0]()
                 for bullet in bullets:
                     self.bullets.append(bullet)
-                self.attack_data.pop(0)
+                self.attack_count += 1
 
         if self.alive:
             self.next_sprite(4)
@@ -87,15 +88,12 @@ class Enemy(Entity):
 
                 self.change_sprite_timer = 0
 
-
-
         for bullet in self.target.bullets:
             if self.collider.check_collision(bullet.collider):
                 self.target.points += 100
                 self.get_damage(bullet.damage)
                 self.target.bullets.remove(bullet)
                 del bullet
-
 
     def get_damage(self, damage: int) -> None:
         self.current_hp -= damage
@@ -105,6 +103,7 @@ class Enemy(Entity):
             self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51) for n in range(5)]
 
     def death(self):
-        self.target.points += 10000
+        if self.current_sprite <= 0:
+            self.target.points += 10000
         self.scene.enemies.remove(self)
         del self
