@@ -75,7 +75,8 @@ class Enemy(Entity):
             if self.t >= self.attack_data[self.attack_count][1]:
                 bullets = self.attack_data[self.attack_count][0]()
                 for bullet in bullets:
-                    self.bullets.append(bullet)
+                    bullet.position += self.position
+                self.bullets.extend(bullets)
                 self.attack_count += 1
 
         if self.alive:
@@ -103,7 +104,7 @@ class Enemy(Entity):
             self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51).image for n in range(5)]
 
     def death(self):
-        if self.current_sprite <= 0:
+        if self.current_hp <= 0:
             self.target.points += 10000
         self.scene.enemies.remove(self)
         del self

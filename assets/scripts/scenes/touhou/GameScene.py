@@ -43,20 +43,28 @@ class GameScene(Scene):
         self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
                               trajectory=[np.array([0, 100]), np.array([550, 100]), np.array([0, 100]), np.array([550, 100]), np.array([0, 100])],
                               speed=.4,
-                              sprite_sheet= SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
+                              sprite_sheet=SpriteSheet("assets/sprites/touhou/entities/fairy_0.png").crop((24, 19)),
                               collider=Collider(15),
-                              hp=50,
-                              attack_data=[(lambda: AttackFunctions.ring(self.enemies[0].position,
-                                                                         50,
-                                                                         BulletData(SpriteSheet("assets/sprites/touhou/bullets/bullet_0.png").crop((16, 16)),
-                                                                                    Collider(8)),
-                                                                         150
-                                                                         ),
-                                            1 + n / 10) for n in range(10)
-                                           ],
+                              hp=10,
+                              attack_data=[("wide_ring", 2, 100, ("assets/sprites/touhou/bullets/bullet_0.png", 16, 16, 8, Vector2.zero()), 150, 1, .05, 2)],
                               bullet_pool=self.enemy_bullets,
-                              scene=self),
+                              scene=self)
                         ]
+
+        for n in range(len(self.enemies)):
+            attack_data = []
+            for i in range(len(self.enemies[n].attack_data)):
+                if self.enemies[n].attack_data[i][0] == "wide_ring":
+                    _, bul_num, ring_num, bul_data, spd, s_time, delay, d_angle = self.enemies[n].attack_data[i]
+                    attack_data.extend(AttackFunctions.wide_ring(Vector2.zero(),
+                                                                 bul_num, ring_num,
+                                                                 BulletData(SpriteSheet(bul_data[0]).crop((bul_data[1], bul_data[2])), Collider(bul_data[3], bul_data[4])),
+                                                                 spd,
+                                                                 s_time,
+                                                                 delay,
+                                                                 d_angle)
+                                       )
+            self.enemies[n].attack_data = attack_data
 
     def process_input(self, events):
         for evt in events:
