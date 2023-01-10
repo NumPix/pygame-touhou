@@ -7,24 +7,32 @@ class AttackFunctions:
     delta_angle = 0
 
     @staticmethod
-    def ring(center: Vector2, number_of_bullets: int, bullet_data: BulletData, speed: float, delta_angle: float = 0):
-        bullets = []
-        for n in range(number_of_bullets):
-            angle: float = (360 * n / number_of_bullets + delta_angle) % 360
-            bullets.append(Bullet(bullet_data, center, angle, speed))
+    def ring(center: Vector2, number_of_bullets: int, bullet_data: BulletData, speed: float, angular_speed: float = 0, delta_angle: float = 0):
+        bullets = [
+            Bullet(
+                bullet_data,
+                center,
+                (360 * n / number_of_bullets + delta_angle) % 360,
+                speed,
+                angular_speed
+            )
+            for n in range(number_of_bullets)
+        ]
 
         return bullets
 
     @staticmethod
-    def wide_ring(center: Vector2, number_of_bullets: int, number_of_rings: int, bullet_data: BulletData, speed: float,
-                  start_time: float, delay: float, delta_angle: float = 0):
-        attacks = []
-        for n in range(number_of_rings):
-            attacks.append(
-                (
-                    lambda: AttackFunctions.ring(center, number_of_bullets, bullet_data, speed, delta_angle * n),
-                    start_time + delay * n
-                )
+    def wide_ring(number_of_bullets: int, number_of_rings: int, bullet_data: BulletData, speed: float,
+                  start_time: float, delay: float, angular_speed: float = 0, delta_angle: float = 0):
+        center = Vector2.zero()
+
+        attacks = [
+            (
+                AttackFunctions.ring,
+                start_time + delay * n,
+                [center, number_of_bullets, bullet_data, speed, angular_speed, n * delta_angle]
             )
+            for n in range(number_of_rings)
+        ]
 
         return attacks

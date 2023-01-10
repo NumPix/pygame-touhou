@@ -3,10 +3,12 @@ from pygame.locals import *
 
 from os.path import join as path_join
 
+from assets.scripts.classes.hud_and_rendering.SelectButtonMatrix import SelectButtonMatrix
+from assets.scripts.math_and_data.Vector2 import Vector2
 from assets.scripts.math_and_data.functions import text_button_sprites
 from assets.scripts.math_and_data.enviroment import *
 from assets.scripts.classes.hud_and_rendering.Scene import Scene
-from assets.scripts.classes.hud_and_rendering.Button import Button
+from assets.scripts.classes.hud_and_rendering.SelectButton import SelectButton
 
 
 class TitleScene(Scene):
@@ -20,13 +22,8 @@ class TitleScene(Scene):
 
         self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 45)
 
-        play_button_sprites = text_button_sprites("Play", self.font, (255, 255, 255), (100, 100, 100), (100, 100, 100))
-
-        play_button_size = play_button_sprites[0].get_size()
-
-        self.play_button = Button(play_button_sprites,
-                                  pygame.Rect(WIDTH - 200, 100, play_button_size[0], play_button_size[1]),
-                                  on_mouse_click=self.switch_to_game)
+        self.matrix = [[["Start", self.switch_to_game]], [["Quit", exit]]]
+        self.ButtonMatrix = SelectButtonMatrix(Vector2(100, 100), self.matrix, self.font, (100, 100, 100), (255, 50, 40))
 
     def render(self, screen, clock):
         background_group = pygame.sprite.RenderPlain()
@@ -34,15 +31,14 @@ class TitleScene(Scene):
 
         background_group.draw(screen)
 
-        self.play_button.draw(screen)
+        self.ButtonMatrix.draw(screen)
 
     def process_input(self, events):
+        self.ButtonMatrix.handle_events(events)
+
         for evt in events:
             if evt.type == QUIT:
                 pygame.quit()
-
-        self.play_button.check_state(events)
-
     def switch_to_game(self):
         from assets.scripts.scenes.GameScene import GameScene
         self.switch_to_scene(GameScene())

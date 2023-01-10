@@ -37,18 +37,19 @@ class GameScene(Scene):
         self.player = Player(0, self)
 
         self.enemy_bullets = []
+        self.bullet_cleaner = None
 
         self.bullet_group = pygame.sprite.RenderPlain()
         self.hud_group = pygame.sprite.RenderPlain()
         self.entity_group = pygame.sprite.RenderPlain()
 
         self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                              trajectory=[np.array([0, 100]), np.array([550, 100]), np.array([0, 100]), np.array([550, 100]), np.array([0, 100])],
+                              trajectory=[np.array([0, 100]), np.array([0, 100]), np.array([550, 100]), np.array([0, 100])],
                               speed=.4,
                               sprite_sheet=SpriteSheet(path_join("assets", "sprites", "entities", "fairy_0.png")).crop((24, 19)),
                               collider=Collider(15),
                               hp=10,
-                              attack_data=[("wide_ring", 2, 100, (path_join("assets", "sprites", "bullets", "bullet_0.png"), 16, 16, 8, Vector2.zero()), 150, 1, .05, 2)],
+                              attack_data=[("wide_ring", 6, 100, (path_join("assets", "sprites", "bullets", "bullet_0.png"), 16, 16, 8, Vector2.zero()), 150, 1, .02, -25, 15)],
                               bullet_pool=self.enemy_bullets,
                               scene=self)
                         ]
@@ -57,15 +58,20 @@ class GameScene(Scene):
             attack_data = []
             for i in range(len(self.enemies[n].attack_data)):
                 if self.enemies[n].attack_data[i][0] == "wide_ring":
-                    _, bul_num, ring_num, bul_data, spd, s_time, delay, d_angle = self.enemies[n].attack_data[i]
-                    attack_data.extend(AttackFunctions.wide_ring(Vector2.zero(),
-                                                                 bul_num, ring_num,
-                                                                 BulletData(SpriteSheet(bul_data[0]).crop((bul_data[1], bul_data[2])), Collider(bul_data[3], bul_data[4])),
-                                                                 spd,
-                                                                 s_time,
-                                                                 delay,
-                                                                 d_angle)
-                                       )
+                    _, bul_num, ring_num, bul_data, spd, s_time, delay, a_speed, d_angle = self.enemies[n].attack_data[i]
+                    attack_data.extend(
+                        AttackFunctions.wide_ring
+                        (
+                            bul_num,
+                            ring_num,
+                            BulletData(SpriteSheet(bul_data[0]).crop((bul_data[1], bul_data[2])), Collider(bul_data[3], bul_data[4])),
+                            spd,
+                            s_time,
+                            delay,
+                            a_speed,
+                            d_angle
+                        )
+                    )
             self.enemies[n].attack_data = attack_data
 
     def process_input(self, events):
@@ -107,6 +113,12 @@ class GameScene(Scene):
                 self.player.bullets.remove(bullet)
                 del bullet
 
+        if self.bullet_cleaner:
+            self.bullet_cleaner.update(self.enemy_bullets, delta_time)
+            if self.bullet_cleaner.kill:
+                del self.bullet_cleaner
+                self.bullet_cleaner = None
+
         for bullet in self.enemy_bullets:
             on_screen = bullet.move(delta_time)
             if not on_screen:
@@ -134,7 +146,7 @@ class GameScene(Scene):
         power_label = self.font.render(f"Power:    {format(round(self.player.power, 2), '.2f')} / 4.00", True,
                                        (255, 255, 255)).convert_alpha()
 
-        hp_label = self.font.render(f"Player:   {'★' * self.player.hp}", True, (255, 255, 255)).convert_alpha()
+        hp_label = self.font.render(f"Player:   {'★' * self.player.hp}" + "O" if self.bullet_cleaner else "", True, (255, 255, 255)).convert_alpha()
 
         player_sprite = self.player.get_sprite()
         if self.player.reviving and self.player.invincibility_timer % 40 > 30:
@@ -147,6 +159,9 @@ class GameScene(Scene):
 
         self.entity_group.draw(screen)
         self.bullet_group.draw(screen)
+
+        if self.bullet_cleaner:
+            screen.blit(self.bullet_cleaner.get_sprite(), (self.bullet_cleaner.collider.position - self.bullet_cleaner.collider.radius).to_tuple())
 
         pygame.draw.circle(screen, (255, 0, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
 

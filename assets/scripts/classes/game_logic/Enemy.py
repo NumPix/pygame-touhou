@@ -74,7 +74,7 @@ class Enemy(Entity):
 
         if self.attack_data and self.attack_count < len(self.attack_data):
             if self.t >= self.attack_data[self.attack_count][1]:
-                bullets = self.attack_data[self.attack_count][0]()
+                bullets = self.attack_data[self.attack_count][0](*self.attack_data[self.attack_count][2])
                 for bullet in bullets:
                     bullet.position += self.position
                 self.bullets.extend(bullets)

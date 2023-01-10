@@ -7,3 +7,6 @@ class BulletData:
         self.sprite_sheet = sprite_sheet
         self.collider = collider
         self.animation_speed = animation_speed
+
+    def __repr__(self):
+        return f"BulletData({self.sprite_sheet}, {self.collider}, {self.animation_speed})"

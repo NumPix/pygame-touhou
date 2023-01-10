@@ -11,3 +11,6 @@ class Collider:
 
     def check_collision(self, target: Collider) -> bool:
         return ((target.position - self.position) * (target.position - self.position)).length() < (self.radius + target.radius) ** 2
+
+    def __repr__(self):
+        return f"Collider({self.radius}, {self.position}, {self.offset})"

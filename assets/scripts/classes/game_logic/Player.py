@@ -1,3 +1,4 @@
+from assets.scripts.classes.game_logic.BulletCleaner import BulletCleaner
 from assets.scripts.classes.game_logic.Entity import Entity
 from assets.scripts.math_and_data.characters_data import *
 from assets.scripts.math_and_data.Vector2 import Vector2
@@ -77,6 +78,7 @@ class Player(Entity):
             self.attack_timer = 0
 
     def get_damage(self):
+        self.scene.bullet_cleaner = BulletCleaner(self.position)
         self.hp -= 1
         self.reviving = True
         self.position = Vector2((GAME_ZONE[2] + GAME_ZONE[0]) // 2, HEIGHT + 80)

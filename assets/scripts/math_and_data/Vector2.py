@@ -37,6 +37,11 @@ class Vector2:
             return Vector2(coords=self.coords / other.coords)
         return Vector2(coords=self.coords / other)
 
+    def __mod__(self, other: float | Vector2) -> Vector2:
+        if type(other) == Vector2:
+            return Vector2(coords=self.coords % other.coords)
+        return Vector2(coords=self.coords % other)
+
     def __repr__(self) -> str:
         return f"Vector2({self.x()}, {self.y()})"
 
