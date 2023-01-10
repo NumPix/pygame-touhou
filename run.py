@@ -6,9 +6,9 @@ pygame.init()
 screen = pygame.display.set_mode(SIZE, DOUBLEBUF, 16)
 clock = pygame.time.Clock()
 
-from assets.scripts.scenes import MenuScene
+from assets.scripts.scenes.TitleScene import TitleScene
 
-active_scene = MenuScene.MenuScene()
+active_scene = TitleScene()
 
 ticksLastFrame = pygame.time.get_ticks()
 
