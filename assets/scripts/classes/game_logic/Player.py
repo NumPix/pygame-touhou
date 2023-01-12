@@ -5,11 +5,10 @@ from assets.scripts.math_and_data.Vector2 import Vector2
 
 from assets.scripts.math_and_data.functions import *
 from assets.scripts.math_and_data.enviroment import *
-from assets.scripts.scenes.TitleScene import TitleScene
 
 
 class Player(Entity):
-    def __init__(self, id: int, scene):
+    def __init__(self, id: int, scene, hp: int):
         super().__init__()
         self.name: str = characters[id]['name']
         self.sprite_sheet: pygame.sprite = characters[id]['sprite-sheet']
@@ -21,7 +20,7 @@ class Player(Entity):
         self.collider = Collider(5)
 
         self.points = 0
-        self.hp = 2
+        self.hp = hp
         self.reviving = False
         self.invincibility_timer = 0
 
@@ -34,10 +33,17 @@ class Player(Entity):
         self.power = 0
         self.bullets = []
 
+        self.slowRate = Vector2.zero()
+
         self.scene = scene
 
     def update(self) -> None:
         delta_time = self.scene.delta_time
+
+        if self.slow:
+            self.slowRate += Vector2.one() * delta_time
+        else:
+            self.slowRate += Vector2.right() * delta_time
 
         if not self.reviving:
             for bullet in self.scene.enemy_bullets:
@@ -62,6 +68,11 @@ class Player(Entity):
         if self.reviving:
             self.invincibility_timer += 1 * 60 * delta_time
             self.position += Vector2.up() * 2 * 60 * delta_time
+
+            # If no HP left
+            if self.hp < 0 and self.position.y() <= GAME_ZONE[3] + GAME_ZONE[1] + 40:
+                self.switch_to_scoreboard()
+
             if self.position.y() <= GAME_ZONE[3] + GAME_ZONE[1] - 100:
                 self.reviving = False
                 self.invincibility_timer = 0
@@ -73,7 +84,7 @@ class Player(Entity):
         self.collider.position = self.position
 
     def shoot(self) -> None:
-        if self.attack_timer >= 3:
+        if self.attack_timer >= 12:
             self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
 
@@ -82,5 +93,7 @@ class Player(Entity):
         self.hp -= 1
         self.reviving = True
         self.position = Vector2((GAME_ZONE[2] + GAME_ZONE[0]) // 2, HEIGHT + 80)
-        if self.hp < 0:
-            self.scene.switch_to_scene(TitleScene())
+
+    def switch_to_scoreboard(self):
+        from assets.scripts.scenes.ScoreboardScene import ScoreboardScene
+        self.scene.switch_to_scene(ScoreboardScene(self))

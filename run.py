@@ -1,11 +1,12 @@
 import pygame
 from pygame.locals import *
-from assets.scripts.math_and_data.enviroment import *
 
+from assets.scripts.math_and_data.enviroment import *
 
 pygame.init()
 screen = pygame.display.set_mode(SIZE, DOUBLEBUF, 16)
 clock = pygame.time.Clock()
+
 
 from assets.scripts.scenes.TitleScene import TitleScene
 
@@ -24,3 +25,6 @@ while active_scene is not None:
 
     pygame.display.flip()
     delta_time = clock.tick(FPS) / 1000
+
+
+db_module.close()

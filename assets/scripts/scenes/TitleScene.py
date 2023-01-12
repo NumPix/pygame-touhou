@@ -5,10 +5,8 @@ from os.path import join as path_join
 
 from assets.scripts.classes.hud_and_rendering.SelectButtonMatrix import SelectButtonMatrix
 from assets.scripts.math_and_data.Vector2 import Vector2
-from assets.scripts.math_and_data.functions import text_button_sprites
 from assets.scripts.math_and_data.enviroment import *
-from assets.scripts.classes.hud_and_rendering.Scene import Scene
-from assets.scripts.classes.hud_and_rendering.SelectButton import SelectButton
+from assets.scripts.classes.hud_and_rendering.Scene import Scene, render_fps
 
 
 class TitleScene(Scene):
@@ -22,9 +20,10 @@ class TitleScene(Scene):
 
         self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 45)
 
-        self.matrix = [[["Start", self.switch_to_game]], [["Quit", exit]]]
+        self.matrix = [[["Start", self.switch_to_game]], [["Quit", pygame.quit]]]
         self.ButtonMatrix = SelectButtonMatrix(Vector2(100, 100), self.matrix, self.font, (100, 100, 100), (255, 50, 40))
 
+    @render_fps
     def render(self, screen, clock):
         background_group = pygame.sprite.RenderPlain()
         background_group.add(self.background)
@@ -39,7 +38,9 @@ class TitleScene(Scene):
         for evt in events:
             if evt.type == QUIT:
                 pygame.quit()
+
     def switch_to_game(self):
         from assets.scripts.scenes.GameScene import GameScene
         self.switch_to_scene(GameScene())
+
 

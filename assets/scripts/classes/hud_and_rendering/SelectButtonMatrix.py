@@ -5,7 +5,7 @@ from assets.scripts.math_and_data.Vector2 import Vector2
 
 
 class SelectButtonMatrix:
-    def __init__(self, position: Vector2, input_matrix: list[list[(str, callable)]], font, defaut_color, selected_color, padding=75):
+    def __init__(self, position: Vector2, input_matrix: list[list[(str, callable)]], font, defaut_color, selected_color, padding=Vector2(75, 75)):
         self.position = position
 
         self.matrix = [
@@ -16,10 +16,10 @@ class SelectButtonMatrix:
                     selected_color,
                     font,
                     pygame.Rect(
-                        position.x() + padding * column,
-                        position.y() + padding * row,
-                        padding,
-                        padding
+                        position.x() + padding.x() * column,
+                        position.y() + padding.y() * row,
+                        padding.x(),
+                        padding.y()
                     ),
                     input_matrix[row][column][1]
                 )
@@ -54,9 +54,9 @@ class SelectButtonMatrix:
         for evt in events:
             if evt.type == pygame.KEYDOWN:
                 if evt.key == pygame.K_UP:
-                    self.move_cursor(0, 1)
-                if evt.key == pygame.K_DOWN:
                     self.move_cursor(0, -1)
+                if evt.key == pygame.K_DOWN:
+                    self.move_cursor(0, 1)
                 if evt.key == pygame.K_LEFT:
                     self.move_cursor(-1, 0)
                 if evt.key == pygame.K_RIGHT:

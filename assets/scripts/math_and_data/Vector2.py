@@ -79,6 +79,12 @@ class Vector2:
                           [np.sin(angle), np.cos(angle)]])
         return Vector2(coords=np.matmul(self.coords, rotor))
 
+    def tan(self):
+        return self.y() / self.x()
+
+    def cot(self):
+        return self.x() / self.y()
+
     @staticmethod
     def one() -> Vector2:
         return Vector2(1, 1)

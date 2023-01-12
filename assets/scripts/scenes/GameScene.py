@@ -8,7 +8,7 @@ from assets.scripts.classes.game_logic.BulletData import BulletData
 from assets.scripts.classes.game_logic.Collider import Collider
 from assets.scripts.classes.game_logic.Enemy import Enemy
 from assets.scripts.classes.game_logic.Player import Player
-from assets.scripts.classes.hud_and_rendering.Scene import Scene
+from assets.scripts.classes.hud_and_rendering.Scene import Scene, render_fps
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
 
@@ -34,7 +34,7 @@ class GameScene(Scene):
 
         self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 36)
 
-        self.player = Player(0, self)
+        self.player = Player(0, self, 0)
 
         self.enemy_bullets = []
         self.bullet_cleaner = None
@@ -49,7 +49,7 @@ class GameScene(Scene):
                               sprite_sheet=SpriteSheet(path_join("assets", "sprites", "entities", "fairy_0.png")).crop((24, 19)),
                               collider=Collider(15),
                               hp=10,
-                              attack_data=[("wide_ring", 6, 100, (path_join("assets", "sprites", "bullets", "bullet_0.png"), 16, 16, 8, Vector2.zero()), 150, 1, .02, -25, 15)],
+                              attack_data=[("wide_ring", 2, 200, (path_join("assets", "sprites", "bullets", "bullet_0.png"), 16, 16, 8, Vector2.zero()), 150, 1, .002, -25, 15)],
                               bullet_pool=self.enemy_bullets,
                               scene=self)
                         ]
@@ -127,6 +127,7 @@ class GameScene(Scene):
 
         self.player.update()
 
+    @render_fps
     def render(self, screen, clock):
         screen.fill((0, 0, 0), rect=GAME_ZONE)
 
@@ -138,15 +139,12 @@ class GameScene(Scene):
 
         self.hud_group.add(self.bg)
 
-        fps_label = self.font.render(f"{format(round(clock.get_fps(), 1), '.1f')} fps", True,
-                                     (255, 255, 255)).convert_alpha()
-
         score_label = self.font.render(f"Score:    {format(self.player.points, '08d')}", True, (255, 255, 255)).convert_alpha()
 
         power_label = self.font.render(f"Power:    {format(round(self.player.power, 2), '.2f')} / 4.00", True,
                                        (255, 255, 255)).convert_alpha()
 
-        hp_label = self.font.render(f"Player:   {'★' * self.player.hp}" + "O" if self.bullet_cleaner else "", True, (255, 255, 255)).convert_alpha()
+        hp_label = self.font.render(f"Player:   {'★' * self.player.hp}", True, (255, 255, 255)).convert_alpha()
 
         player_sprite = self.player.get_sprite()
         if self.player.reviving and self.player.invincibility_timer % 40 > 30:
@@ -170,7 +168,6 @@ class GameScene(Scene):
         screen.blit(score_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 200))
         screen.blit(hp_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 300))
         screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 370))
-        screen.blit(fps_label, (WIDTH - fps_label.get_rect().w - 30, HEIGHT - fps_label.get_rect().h))
 
         self.entity_group.empty()
         self.bullet_group.empty()
