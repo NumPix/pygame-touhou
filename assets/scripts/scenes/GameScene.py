@@ -1,7 +1,7 @@
 import numpy as np
 import pygame
 from pygame.locals import *
-
+import json
 from os.path import join as path_join
 
 from assets.scripts.classes.game_logic.BulletData import BulletData
@@ -11,7 +11,6 @@ from assets.scripts.classes.game_logic.Player import Player
 from assets.scripts.classes.hud_and_rendering.Scene import Scene, render_fps
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
-
 from assets.scripts.classes.game_logic.AttackFunctions import AttackFunctions
 
 from assets.scripts.math_and_data.enviroment import *
@@ -43,36 +42,12 @@ class GameScene(Scene):
         self.hud_group = pygame.sprite.RenderPlain()
         self.entity_group = pygame.sprite.RenderPlain()
 
-        self.enemies = [Enemy(position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                              trajectory=[np.array([0, 100]), np.array([0, 100]), np.array([550, 100]), np.array([0, 100])],
-                              speed=.4,
-                              sprite_sheet=SpriteSheet(path_join("assets", "sprites", "entities", "fairy_0.png")).crop((24, 19)),
-                              collider=Collider(15),
-                              hp=10,
-                              attack_data=[("wide_ring", 2, 200, (path_join("assets", "sprites", "bullets", "bullet_0.png"), 16, 16, 8, Vector2.zero()), 150, 1, .002, -25, 15)],
-                              bullet_pool=self.enemy_bullets,
-                              scene=self)
-                        ]
+        self.time = 0
+        self.level = json.load(open(path_join("assets", "levels", "touhou", "level_1.json")))
+        self.enemy_count = 0
 
-        for n in range(len(self.enemies)):
-            attack_data = []
-            for i in range(len(self.enemies[n].attack_data)):
-                if self.enemies[n].attack_data[i][0] == "wide_ring":
-                    _, bul_num, ring_num, bul_data, spd, s_time, delay, a_speed, d_angle = self.enemies[n].attack_data[i]
-                    attack_data.extend(
-                        AttackFunctions.wide_ring
-                        (
-                            bul_num,
-                            ring_num,
-                            BulletData(SpriteSheet(bul_data[0]).crop((bul_data[1], bul_data[2])), Collider(bul_data[3], bul_data[4])),
-                            spd,
-                            s_time,
-                            delay,
-                            a_speed,
-                            d_angle
-                        )
-                    )
-            self.enemies[n].attack_data = attack_data
+        self.enemies = []
+
 
     def process_input(self, events):
         for evt in events:
@@ -102,6 +77,48 @@ class GameScene(Scene):
 
     def update(self, delta_time):
         self.delta_time = delta_time
+        self.time += delta_time
+
+        if self.level and self.enemy_count < len(self.level):
+            if self.time >= self.level[self.enemy_count]["time"]:
+                enemy_data = self.level[self.enemy_count]
+                enemy = Enemy(
+                    position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
+                    trajectory=list(map(np.array, enemy_data["trajectory"])),
+                    speed=enemy_data["speed"],
+                    sprite_sheet=SpriteSheet(path_join(*enemy_data["sprite"]["path"])).crop(enemy_data["sprite"]["size"]),
+                    collider=Collider(enemy_data["collider"]["radius"], offset=Vector2(*enemy_data["collider"]["offset"])),
+                    hp=enemy_data["hp"],
+                    attack_data=[(*attack[:3], (path_join(*attack[3][0]), attack[3][1], attack[3][2], attack[3][3], Vector2(*attack[3][4])), *attack[4:]) for attack in enemy_data["attacks"]],
+                    bullet_pool=self.enemy_bullets,
+                    scene=self
+                )
+
+                attack_data = []
+                for i in range(len(enemy.attack_data)):
+                    if enemy.attack_data[i][0] == "wide_ring":
+                        _, bul_num, ring_num, bul_data, spd, s_time, delay, a_speed, d_angle = \
+                        enemy.attack_data[i]
+                        attack_data.extend(
+                        AttackFunctions.wide_ring
+                            (
+                                bul_num,
+                                ring_num,
+                                BulletData(
+                                    SpriteSheet(bul_data[0]).crop((bul_data[1], bul_data[2])),
+                                    Collider(bul_data[3], bul_data[4])),
+                                    spd,
+                                    s_time,
+                                    delay,
+                                    a_speed,
+                                    d_angle
+                            )
+                        )
+                    enemy.attack_data = attack_data
+
+                self.enemies.append(enemy)
+                self.enemy_count += 1
+
 
         for enemy in self.enemies:
             enemy.update()

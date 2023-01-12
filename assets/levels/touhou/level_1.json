@@ -1,0 +1,41 @@
+[
+  {
+    "trajectory": [
+      [0, 100], [0, 100], [550, 100], [0, 100]
+    ],
+    "speed": 0.4,
+    "sprite": {
+      "size": [24, 19],
+      "path": ["assets", "sprites", "entities", "fairy_0.png"]
+    },
+    "collider": {
+      "radius": 15,
+      "offset": [0, 0]
+    },
+    "hp": 10,
+    "attacks": [
+      ["wide_ring", 2, 200, [["assets", "sprites", "bullets", "bullet_0.png"], 16, 16, 8, [0, 0]], 150, 1, 0.002, -25, 15]
+    ],
+    "time": 0.5
+  },
+
+  {
+    "trajectory": [
+      [100, 100], [0, 200], [550, 0], [0, 100]
+    ],
+    "speed": 0.8,
+    "sprite": {
+      "size": [24, 19],
+      "path": ["assets", "sprites", "entities", "fairy_0.png"]
+    },
+    "collider": {
+      "radius": 15,
+      "offset": [0, 0]
+    },
+    "hp": 10,
+    "attacks": [
+      ["wide_ring", 2, 200, [["assets", "sprites", "bullets", "bullet_0.png"], 16, 16, 8, [0, 0]], 150, 1, 0.002, -25, 15]
+    ],
+    "time": 0.5
+  }
+]

@@ -13,42 +13,43 @@ from assets.scripts.math_and_data.functions import clamp
 
 
 class ScoreboardScene(Scene):
-    def __init__(self, player: Player):
+    def __init__(self, player: Player = None):
         super().__init__()
 
+        self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 24)
         self.player = player
-
-        self.cursor = 0
-        self.MAX_NAME_LENGTH = 8
-
-        self.statistics = ScoreboardLine(" " * self.MAX_NAME_LENGTH, self.player.points, datetime.date.today().strftime("%d/%m/%y"), round(self.player.slowRate.tan(), 2), True)
 
         self.leaderboard = list(map(lambda x: ScoreboardLine(*x), db_module.get_leaderboard()))
         self.leaderboard.sort(reverse=True)
 
-        if len(self.leaderboard) < 10 or self.statistics > self.leaderboard[-1]:
-            self.leaderboard.append(self.statistics)
-            self.leaderboard.sort(reverse=True)
-            if len(self.leaderboard) > 10:
-                self.leaderboard.pop(-1)
-        else:
-            self.switch_to_menu()
+        if player is not None:
+
+            self.cursor = 0
+            self.MAX_NAME_LENGTH = 8
+
+            self.statistics = ScoreboardLine(" " * self.MAX_NAME_LENGTH, self.player.points, datetime.date.today().strftime("%d/%m/%y"), round(self.player.slowRate.tan(), 2), True)
+
+            if len(self.leaderboard) < 10 or self.statistics > self.leaderboard[-1]:
+                self.leaderboard.append(self.statistics)
+                self.leaderboard.sort(reverse=True)
+                if len(self.leaderboard) > 10:
+                    self.leaderboard.pop(-1)
+            else:
+                self.switch_to_menu()
 
 
-        self.name = " " * self.MAX_NAME_LENGTH
+            self.name = " " * self.MAX_NAME_LENGTH
 
-        self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 24)
-
-        self.matrix = [
-            [[char, lambda char=char: self.type_letter(char)] for char in "ABCDEFGHIJKLMNOP"],
-            [[char, lambda char=char: self.type_letter(char)] for char in "QRSTUVWXYZ.,:;_@"],
-            [[char, lambda char=char: self.type_letter(char)] for char in "abcdefghijklmnop"],
-            [[char, lambda char=char: self.type_letter(char)] for char in "qrstuvwxyz+-/*=%"],
-            [[char, lambda char=char: self.type_letter(char)] for char in "0123456789#!?\'\"$"],
-            [[char, lambda char=char: self.type_letter(char)] for char in "(){}[]<>&|~^  "] + [["←", self.delete_letter]] + [["End", self.save]]
-        ]
-        self.keyboard = SelectButtonMatrix(Vector2(WIDTH // 2 - 250, HEIGHT // 2 + 150), self.matrix, self.font, (100, 100, 100), (255, 50, 40), padding=Vector2(30, 35))
-        self.keyboard.cursor = Vector2(15, 5)
+            self.matrix = [
+                [[char, lambda char=char: self.type_letter(char)] for char in "ABCDEFGHIJKLMNOP"],
+                [[char, lambda char=char: self.type_letter(char)] for char in "QRSTUVWXYZ.,:;_@"],
+                [[char, lambda char=char: self.type_letter(char)] for char in "abcdefghijklmnop"],
+                [[char, lambda char=char: self.type_letter(char)] for char in "qrstuvwxyz+-/*=%"],
+                [[char, lambda char=char: self.type_letter(char)] for char in "0123456789#!?\'\"$"],
+                [[char, lambda char=char: self.type_letter(char)] for char in "(){}[]<>&|~^  "] + [["←", self.delete_letter]] + [["End", self.save]]
+            ]
+            self.keyboard = SelectButtonMatrix(Vector2(WIDTH // 2 - 250, HEIGHT // 2 + 150), self.matrix, self.font, (100, 100, 100), (255, 50, 40), padding=Vector2(30, 35))
+            self.keyboard.cursor = Vector2(15, 5)
 
     def type_letter(self, char: str):
         if self.cursor == self.MAX_NAME_LENGTH:
@@ -72,17 +73,21 @@ class ScoreboardScene(Scene):
             self.name.pop(self.cursor)
             self.name.append(" ")
 
-        self.name = ''.join(self.name)
+        self.name = "{:8}".format(''.join(self.name))
 
     def process_input(self, events):
-        self.keyboard.handle_events(events)
+        if self.player is not None:
+            self.keyboard.handle_events(events)
 
         for evt in events:
             if evt.type == QUIT:
                 pygame.quit()
             if evt.type == pygame.KEYDOWN:
                 if evt.key == K_x:
-                    self.delete_letter()
+                    if self.player is not None:
+                        self.delete_letter()
+                    else:
+                        self.switch_to_menu()
 
     def text_render(self, screen, text: str, position: Vector2, padding: int, color=(255, 255, 255)):
         for i in range(len(text)):
@@ -104,7 +109,8 @@ class ScoreboardScene(Scene):
                 self.text_render(screen, "     " + " " * clamp(self.cursor, 0, self.MAX_NAME_LENGTH - 1) + "_" + " " * (self.MAX_NAME_LENGTH - clamp(self.cursor, 0, self.MAX_NAME_LENGTH - 1) - 1),  Vector2(100, 100 + i * 30), 20)
                 self.text_render(screen, "{:2}   ".format(i + 1) + (self.name if self.name != " " * self.MAX_NAME_LENGTH else "_" * self.MAX_NAME_LENGTH) + str(line)[8:],  Vector2(100, 100 + i * 30), 20)
 
-        self.keyboard.draw(screen)
+        if self.player is not None:
+            self.keyboard.draw(screen)
 
     def switch_to_menu(self):
         from assets.scripts.scenes.TitleScene import TitleScene
