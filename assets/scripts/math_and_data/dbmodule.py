@@ -7,6 +7,7 @@ from assets.scripts.classes.hud_and_rendering.ScoreboardLine import ScoreboardLi
 class DAO:
     def __init__(self):
         self.con = sqlite3.connect(path_join("assets", "database.db"))
+
         self.cur = self.con.cursor()
 
         build = """
@@ -41,20 +42,27 @@ class DAO:
 
         self.cur.execute(sql, scoreboard_line.get_values())
 
+
+        sql = """
+        SELECT * 
+        FROM leaderboard
+        ORDER BY leaderboard.score ASC, leaderboard.date DESC, leaderboard.slow DESC
+        LIMIT 1;
+        """
+
+        delete_candidate = self.cur.execute(sql).fetchall()[0]
+
         sql = """
             DELETE FROM leaderboard
-            WHERE (leaderboard.name, leaderboard.score, leaderboard.date, leaderboard.slow) = 
-            (
-                SELECT * 
-                FROM leaderboard
-                ORDER BY leaderboard.score ASC, leaderboard.date DESC, leaderboard.slow DESC
-                LIMIT 1
-            )
-            LIMIT 1
+            WHERE 
+            leaderboard.name = ? AND
+            leaderboard.score = ? AND
+            leaderboard.date = ? AND
+            leaderboard.slow = ?
             """
 
         if len(self.get_leaderboard()) > 10:
-            self.cur.execute(sql)
+            self.cur.execute(sql, delete_candidate)
 
         self.con.commit()
 

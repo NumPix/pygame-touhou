@@ -1,5 +1,6 @@
 [
   {
+    "start_position": [0, 0],
     "trajectory": [
       [0, 100], [0, 100], [550, 100], [0, 100]
     ],
@@ -14,14 +15,15 @@
     },
     "hp": 10,
     "attacks": [
-      ["wide_ring", 2, 200, [["assets", "sprites", "bullets", "bullet_0.png"], 16, 16, 8, [0, 0]], 150, 1, 0.002, -25, 15]
+      ["wide_ring", 3, 100, [["assets", "sprites", "bullets", "bullet_0.png"], 16, 16, 8, [0, 0]], 150, 1, 0.05, -30, 20]
     ],
-    "time": 0.5
+    "time": 0
   },
 
   {
+    "start_position": [0, 100],
     "trajectory": [
-      [100, 100], [0, 200], [550, 0], [0, 100]
+      [100, 100], [0, 200], [550, 0], [550, 0], [550, 0], [0, 100]
     ],
     "speed": 0.8,
     "sprite": {
@@ -34,8 +36,8 @@
     },
     "hp": 10,
     "attacks": [
-      ["wide_ring", 2, 200, [["assets", "sprites", "bullets", "bullet_0.png"], 16, 16, 8, [0, 0]], 150, 1, 0.002, -25, 15]
+      ["wide_ring", 2, 400, [["assets", "sprites", "bullets", "bullet_0.png"], 16, 16, 8, [0, 0]], 150, 1, 0.002, -25, 15]
     ],
-    "time": 0.5
+    "time": 0
   }
 ]

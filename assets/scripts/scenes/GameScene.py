@@ -83,8 +83,8 @@ class GameScene(Scene):
             if self.time >= self.level[self.enemy_count]["time"]:
                 enemy_data = self.level[self.enemy_count]
                 enemy = Enemy(
-                    position=Vector2(GAME_ZONE[0], GAME_ZONE[1]),
-                    trajectory=list(map(np.array, enemy_data["trajectory"])),
+                    position=Vector2(GAME_ZONE[0], GAME_ZONE[1]) + Vector2(*enemy_data["start_position"]),
+                    trajectory=list(map(np.array, [enemy_data["start_position"]]+ enemy_data["trajectory"])),
                     speed=enemy_data["speed"],
                     sprite_sheet=SpriteSheet(path_join(*enemy_data["sprite"]["path"])).crop(enemy_data["sprite"]["size"]),
                     collider=Collider(enemy_data["collider"]["radius"], offset=Vector2(*enemy_data["collider"]["offset"])),
