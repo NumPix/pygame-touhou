@@ -28,30 +28,9 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 characters = {
     0: {
         "name": "Marisa",
-        "speed": 300,
+        "speed": 370,
         "sprite-sheet": SpriteSheet(path_join("assets", "sprites", "entities", "marisa_forward.png")).crop((25, 50)),
-        "bullet-sprite-sheet": SpriteSheet(path_join("assets", "sprites", "bullets", "marisa_bullet.png")).crop((32, 32)),
+        "bullet-sprite-sheet": SpriteSheet(path_join("assets", "sprites", "projectiles_and_items", "marisa_bullet.png")).crop((32, 32)),
         "attack-function": marisa_base_attack
     },
-    1: {
-        "name": "Reimu",
-        "speed": 5,
-        "sprite-sheet": None,
-        "bullet-sprite-sheet": None,
-        "attack-function": None
-    },
-    2: {
-        "name": "Remilia",
-        "speed": 6,
-        "sprite-sheet": None,
-        "bullet-sprite-sheet": None,
-        "attack-function": None
-    },
-    3: {
-        "name": "Koishi",
-        "speed": 6,
-        "sprite-sheet": None,
-        "bullet-sprite-sheet": None,
-        "attack-function": None
-    }
 }

@@ -3,6 +3,8 @@ import pygame
 from assets.scripts.classes.hud_and_rendering.SelectButton import SelectButton
 from assets.scripts.math_and_data.Vector2 import Vector2
 
+from assets.scripts.math_and_data.enviroment import music_module
+
 
 class SelectButtonMatrix:
     def __init__(self, position: Vector2, input_matrix: list[list[(str, callable)]], font, defaut_color, selected_color, padding=Vector2(75, 75)):
@@ -55,11 +57,16 @@ class SelectButtonMatrix:
             if evt.type == pygame.KEYDOWN:
                 if evt.key == pygame.K_UP:
                     self.move_cursor(0, -1)
+                    music_module.sounds[21](.05)
                 if evt.key == pygame.K_DOWN:
                     self.move_cursor(0, 1)
+                    music_module.sounds[21](.05)
                 if evt.key == pygame.K_LEFT:
                     self.move_cursor(-1, 0)
+                    music_module.sounds[21](.05)
                 if evt.key == pygame.K_RIGHT:
                     self.move_cursor(1, 0)
+                    music_module.sounds[21](.05)
                 if evt.key == pygame.K_RETURN or evt.key == pygame.K_z:
+                    music_module.sounds[15](.1)
                     self.matrix[self.cursor_pos.y()][self.cursor_pos.x()].trigger()

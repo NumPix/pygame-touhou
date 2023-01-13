@@ -8,7 +8,7 @@ from assets.scripts.math_and_data.functions import clamp
 
 
 class BulletCleaner:
-    def __init__(self, position: Vector2, increase_speed=1000):
+    def __init__(self, position: Vector2, increase_speed=1000, give_points: bool = False):
         self.collider = Collider(
             0,
             position
@@ -17,16 +17,20 @@ class BulletCleaner:
         self.sprite = pygame.image.load(path_join("assets", "sprites", "effects", "player_death_effect.png")).convert_alpha()
 
         self.increase_speed = increase_speed
+        self.give_points = give_points
 
         self.kill = False
 
-    def update(self, bullets, delta_time):
+    def update(self, bullets, scene, delta_time):
         self.collider.radius += self.increase_speed * delta_time
 
         i = 0
         while i < len(bullets):
             if bullets[i].collider.check_collision(self.collider):
                 bullet = bullets.pop(i)
+                if self.give_points:
+                    point_item = self.spawn_point_item(bullet.position)
+                    scene.items.append(point_item)
                 del bullet
                 i -= 1
             i += 1
@@ -39,3 +43,6 @@ class BulletCleaner:
         image.set_alpha(clamp(255 - self.collider.radius ** 2 / (GAME_ZONE[2] ** 2 + GAME_ZONE[3] ** 2) * 1000, 0, 255))
 
         return image
+    def spawn_point_item(self, position: Vector2):
+        from assets.scripts.classes.game_logic.Item import StarItem
+        return StarItem(position)

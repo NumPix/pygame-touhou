@@ -1,4 +1,5 @@
 import pygame.image
+import time
 from pygame.locals import *
 
 from os.path import join as path_join
@@ -12,6 +13,8 @@ from assets.scripts.classes.hud_and_rendering.Scene import Scene, render_fps
 class TitleScene(Scene):
     def __init__(self):
         super().__init__()
+        music_module.play_music("01.-A-Dream-that-is-more-Scarlet-than-Red_1.wav")
+
         self.background = pygame.sprite.Sprite()
         self.background.rect = (0, 0, WIDTH, HEIGHT)
         self.background.image = pygame.image.load(
@@ -20,7 +23,7 @@ class TitleScene(Scene):
 
         self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 45)
 
-        self.matrix = [[["Start", self.switch_to_game]], [["Score", self.switch_to_scoreboard]], [["Quit", pygame.quit]]]
+        self.matrix = [[["Start", self.switch_to_game]], [["Score", self.switch_to_scoreboard]], [["Quit", self.quit]]]
         self.ButtonMatrix = SelectButtonMatrix(Vector2(100, 100), self.matrix, self.font, (100, 100, 100), (255, 50, 40))
 
     @render_fps
@@ -47,4 +50,8 @@ class TitleScene(Scene):
         from assets.scripts.scenes.ScoreboardScene import ScoreboardScene
         self.switch_to_scene(ScoreboardScene())
 
+    def quit(self):
+        music_module.sounds[0](.1)
+        time.sleep(.3)
+        pygame.quit()
 

@@ -1,12 +1,11 @@
 import numpy as np
 import pygame.surface
 
-from os.path import join as path_join
-
-from assets.scripts.classes.game_logic.Collider import Collider
+from assets.scripts.classes.game_logic.Item import *
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
 from assets.scripts.classes.game_logic.Entity import Entity
+from assets.scripts.math_and_data.enviroment import music_module
 from assets.scripts.math_and_data.functions import scale_sprite, set_alpha_sprite
 from assets.scripts.math_and_data.Splines import BasisSpline
 
@@ -22,6 +21,7 @@ class Enemy(Entity):
                  collider: Collider,
                  hp: int,
                  attack_data: [(callable, float), ...],
+                 drop,
                  bullet_pool,
                  scene):
 
@@ -48,6 +48,7 @@ class Enemy(Entity):
         self.bullets: list = bullet_pool
 
         self.collider: Collider = collider
+        self.drop = drop
 
         self.scene = scene
         self.target = scene.player
@@ -64,7 +65,7 @@ class Enemy(Entity):
 
         delta_time = self.scene.delta_time
 
-        self.position = self.start_position + Vector2(coords=BSpline.curve(self.trajectory, self.t))
+        self.position = Vector2(coords=BSpline.curve(self.trajectory, self.t)) + Vector2(GAME_ZONE[0], GAME_ZONE[1])
         self.t += self.speed * delta_time
         if self.t > len(self.trajectory) - 1:
             self.death()
@@ -74,6 +75,7 @@ class Enemy(Entity):
 
         if self.attack_data and self.attack_count < len(self.attack_data):
             if self.t >= self.attack_data[self.attack_count][1]:
+                music_module.sounds[3](.1)
                 bullets = self.attack_data[self.attack_count][0](*self.attack_data[self.attack_count][2])
                 for bullet in bullets:
                     bullet.position += self.position
@@ -98,8 +100,10 @@ class Enemy(Entity):
                 del bullet
 
     def get_damage(self, damage: int) -> None:
+        music_module.sounds[2](.2)
         self.current_hp -= damage
         if self.current_hp <= 0 and self.alive:
+            music_module.sounds[23](.15)
             self.alive = False
             self.current_sprite = 0
             self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51).image for n in range(5)]
@@ -107,5 +111,20 @@ class Enemy(Entity):
     def death(self):
         if self.current_hp <= 0:
             self.target.points += 10000
+            drop = np.random.choice(self.drop[0], 1, self.drop[1])
+            drop_item = None
+            if drop == "power_large":
+                drop_item = PowerItem(self.position, True)
+            elif drop == "power_small":
+                drop_item = PowerItem(self.position, False)
+            elif drop == "points":
+                drop_item = PointItem(self.position)
+            elif drop == "full_power":
+                drop_item = FullPowerItem(self.position)
+            elif drop == "1up":
+                drop_item = OneUpItem(self.position)
+
+            if drop_item is not None:
+                self.scene.items.append(drop_item)
         self.scene.enemies.remove(self)
         del self

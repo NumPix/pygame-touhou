@@ -8,13 +8,17 @@ from assets.scripts.classes.hud_and_rendering.Scene import Scene, render_fps
 from assets.scripts.classes.hud_and_rendering.ScoreboardLine import ScoreboardLine
 from assets.scripts.classes.hud_and_rendering.SelectButtonMatrix import SelectButtonMatrix
 from assets.scripts.math_and_data.Vector2 import Vector2
-from assets.scripts.math_and_data.enviroment import WIDTH, HEIGHT, db_module
+from assets.scripts.math_and_data.enviroment import WIDTH, HEIGHT, db_module, music_module
 from assets.scripts.math_and_data.functions import clamp
 
 
 class ScoreboardScene(Scene):
     def __init__(self, player: Player = None):
         super().__init__()
+
+        music_module.stop_music()
+
+        self.MAX_NAME_LENGTH = 8
 
         self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 24)
         self.player = player
@@ -25,7 +29,6 @@ class ScoreboardScene(Scene):
         if player is not None:
 
             self.cursor = 0
-            self.MAX_NAME_LENGTH = 8
 
             self.statistics = ScoreboardLine(" " * self.MAX_NAME_LENGTH, self.player.points, datetime.date.today().strftime("%d/%m/%y"), round(self.player.slowRate.tan(), 2), True)
 
@@ -36,7 +39,6 @@ class ScoreboardScene(Scene):
                     self.leaderboard.pop(-1)
             else:
                 self.switch_to_menu()
-
 
             self.name = " " * self.MAX_NAME_LENGTH
 
@@ -52,9 +54,11 @@ class ScoreboardScene(Scene):
             self.keyboard.cursor = Vector2(15, 5)
 
     def type_letter(self, char: str):
-        if self.cursor == self.MAX_NAME_LENGTH:
+        if self.cursor >= self.MAX_NAME_LENGTH:
             self.save()
+            return
         self.name = list(self.name)
+        print(self.name, self.cursor)
         self.name[self.cursor] = char
         self.name = ''.join(self.name)
         self.cursor += 1
@@ -84,6 +88,7 @@ class ScoreboardScene(Scene):
                 pygame.quit()
             if evt.type == pygame.KEYDOWN:
                 if evt.key == K_x:
+                    music_module.sounds[0](.1)
                     if self.player is not None:
                         self.delete_letter()
                     else:

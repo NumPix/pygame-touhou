@@ -31,6 +31,7 @@ class Player(Entity):
 
         self.attack_timer = 0
         self.power = 0
+
         self.bullets = []
 
         self.slowRate = Vector2.zero()
@@ -55,6 +56,13 @@ class Player(Entity):
                 if enemy.collider.check_collision(self.collider):
                     self.get_damage()
                     break
+
+        for item in self.scene.items:
+            if item.collider.check_collision(self.collider):
+                item.on_collect(self)
+                music_module.sounds[8](.1)
+                self.scene.items.remove(item)
+                del item
 
         self.attack_timer += 2.5 * 60 * delta_time
         self.change_sprite_timer += 1 * 60 * delta_time
@@ -84,15 +92,22 @@ class Player(Entity):
         self.collider.position = self.position
 
     def shoot(self) -> None:
-        if self.attack_timer >= 12:
+        if self.attack_timer >= 10:
+            music_module.sounds[17](.1)
             self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
 
     def get_damage(self):
-        self.scene.bullet_cleaner = BulletCleaner(self.position)
+        music_module.sounds[16](.2)
+        self.scene.bullet_cleaner = BulletCleaner(self.position, give_points=True)
         self.hp -= 1
         self.reviving = True
-        self.position = Vector2((GAME_ZONE[2] + GAME_ZONE[0]) // 2, HEIGHT + 80)
+        self.position = Vector2(50 + (GAME_ZONE[2] - GAME_ZONE[0]) // 2, HEIGHT + 80)
+
+    def add_power(self, power: float):
+        self.power += power
+        if power > 4:
+            self.power = 4
 
     def switch_to_scoreboard(self):
         from assets.scripts.scenes.ScoreboardScene import ScoreboardScene
