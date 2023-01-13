@@ -78,14 +78,14 @@ class AttackFunctions:
 
     @staticmethod
     def wide_ring(number_of_bullets: int, number_of_rings: int, bullet_data: BulletData, speed: float,
-                  start_time: float, delay: float, angular_speed: float = 0, delta_angle: float = 0):
-        center = Vector2.zero()
+                  start_time: float, delay: float, angular_speed: float = 0, delta_angle: float = 0, rand_center=False):
 
         attacks = [
             (
                 AttackFunctions.ring,
                 start_time + delay * n,
-                [center, number_of_bullets, bullet_data, speed, angular_speed, n * delta_angle]
+                [Vector2.zero() if not rand_center else\
+            Vector2.one().rotate(random.randint(0, 360)) * 25, number_of_bullets, bullet_data, speed, angular_speed, n * delta_angle]
             )
             for n in range(number_of_rings)
         ]
@@ -94,14 +94,13 @@ class AttackFunctions:
 
     @staticmethod
     def long_random(number_of_bullets: int, number_of_randoms: int, bullet_data: BulletData, speed: float,
-                    start_time: float, delay: float, angular_speed: float = 0):
-        center = Vector2.zero()
-
+                    start_time: float, delay: float, angular_speed: float = 0, rand_center=False):
         attacks = [
             (
                 AttackFunctions.random,
                 start_time + delay * n,
-                [center, number_of_bullets, bullet_data, speed, angular_speed]
+                [Vector2 if not rand_center else\
+            Vector2.one().rotate(random.randint(0, 360)) * 25, number_of_bullets, bullet_data, speed, angular_speed]
             )
             for n in range(number_of_randoms)
         ]

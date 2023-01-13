@@ -58,7 +58,6 @@ class ScoreboardScene(Scene):
             self.save()
             return
         self.name = list(self.name)
-        print(self.name, self.cursor)
         self.name[self.cursor] = char
         self.name = ''.join(self.name)
         self.cursor += 1

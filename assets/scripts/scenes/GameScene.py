@@ -49,6 +49,7 @@ class GameScene(Scene):
 
         self.time = 0
         self.level = json.load(open(path_join("assets", "levels", "touhou", "level_1.json")))
+        self.level_enemies = sorted(self.level["enemies"], key=lambda enemy: enemy["time"])
         self.enemy_count = 0
 
         self.enemies = []
@@ -83,9 +84,9 @@ class GameScene(Scene):
         self.delta_time = delta_time
         self.time += delta_time
 
-        if self.level["enemies"] and self.enemy_count < len(self.level["enemies"]):
-            if self.time >= self.level["enemies"][self.enemy_count]["time"]:
-                enemy_data = self.level["enemies"][self.enemy_count]
+        if self.level_enemies and self.enemy_count < len(self.level_enemies):
+            if self.time >= self.level_enemies[self.enemy_count]["time"]:
+                enemy_data = self.level_enemies[self.enemy_count]
                 enemy = Enemy(
                     position=Vector2(GAME_ZONE[0], GAME_ZONE[1]) + Vector2(*enemy_data["start_position"]),
                     trajectory=list(map(np.array, [enemy_data["start_position"]]+ enemy_data["trajectory"])),
@@ -102,7 +103,7 @@ class GameScene(Scene):
                 attack_data = []
                 for i in range(len(enemy.attack_data)):
                     if enemy.attack_data[i][0] == "wide_ring":
-                        _, bul_num, ring_num, bul_data, spd, s_time, delay, a_speed, d_angle = \
+                        _, bul_num, ring_num, bul_data, spd, s_time, delay, a_speed, d_angle, rand_cnt = \
                         enemy.attack_data[i]
                         attack_data.extend(
                         AttackFunctions.wide_ring
@@ -117,11 +118,12 @@ class GameScene(Scene):
                                 start_time=s_time,
                                 delay=delay,
                                 angular_speed=a_speed,
-                                delta_angle=d_angle
+                                delta_angle=d_angle,
+                                rand_center=rand_cnt
                             )
                         )
                     elif enemy.attack_data[i][0] == "long_random":
-                        _, bul_num, rand_num, bul_data, spd, s_time, delay, a_speed = \
+                        _, bul_num, rand_num, bul_data, spd, s_time, delay, a_speed, rand_cnt = \
                         enemy.attack_data[i]
                         attack_data.extend(
                         AttackFunctions.long_random
@@ -136,6 +138,7 @@ class GameScene(Scene):
                                 start_time=s_time,
                                 delay=delay,
                                 angular_speed=a_speed,
+                                rand_center=rand_cnt
                             )
                         )
                     elif enemy.attack_data[i][0] == "wide_cone":
@@ -208,7 +211,7 @@ class GameScene(Scene):
 
         self.hud_group.add(self.bg)
 
-        high_score = sorted(db_module.get_leaderboard(), key=lambda x: x[1])[-1][1]
+        high_score = sorted(db_module.get_leaderboard(), key=lambda x: x[1])[-1][1] if len(db_module.get_leaderboard()) > 0 else 0
 
         hi_score_label = self.font.render(f"HiScore:    {format(high_score if high_score > self.player.points else self.player.points, '09d')}", True, (255, 255, 255)).convert_alpha()
 

@@ -8,6 +8,7 @@ class Sound:
     def __init__(self, filename: str, duration: int = 0, fade: int = 0, volume: int = 1,
                  global_volume: float = 1) -> None:
 
+        self.name = filename
         self.sound = mixer.Sound(path_join("assets", "music", filename))
         self.duration = duration
         self.fade = fade
@@ -39,6 +40,7 @@ class MusicModule:
         from assets.scripts.math_and_data.enviroment import PATH
 
         self.sounds = [Sound(path_join(PATH, "assets", "music", "sounds", filename)) for filename in filter(lambda x: x.endswith(".wav"), listdir(path_join(PATH, "assets", "music", "sounds")))]
+        self.sounds.sort(key=lambda sound: sound.name)
         self.bg_volume = volume
 
     def change_sound_config(self, index: int, duration: int = None, fade: int = None, global_volume: float = None) -> None:

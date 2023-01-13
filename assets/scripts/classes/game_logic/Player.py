@@ -30,7 +30,7 @@ class Player(Entity):
         self.slow: bool = False
 
         self.attack_timer = 0
-        self.power = 0
+        self.power = 1
 
         self.bullets = []
 
@@ -92,7 +92,7 @@ class Player(Entity):
         self.collider.position = self.position
 
     def shoot(self) -> None:
-        if self.attack_timer >= 10:
+        if self.attack_timer >= 14:
             music_module.sounds[17](.1)
             self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
