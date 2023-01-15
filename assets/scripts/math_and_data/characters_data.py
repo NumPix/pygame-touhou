@@ -19,8 +19,10 @@ def marisa_base_attack(fire_point: Vector2, power: int):
 
     for i in range(-current_power, current_power + 1):
         i /= 2
-        bullet = PlayerBullet(bullet_data, fire_point, delta_angle * i, 700, damage=1)
-        bullets.append(bullet)
+        bullet_1 = PlayerBullet(bullet_data, fire_point - Vector2(6, 0), delta_angle * i, 900, damage=1)
+        bullet_2 = PlayerBullet(bullet_data, fire_point + Vector2(6, 0), delta_angle * i, 900, damage=1)
+        bullets.append(bullet_1)
+        bullets.append(bullet_2)
 
     return bullets
 

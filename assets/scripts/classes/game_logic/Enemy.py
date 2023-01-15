@@ -133,5 +133,6 @@ class Enemy(Entity):
             if drop_item is not None:
                 self.scene.items.append(drop_item)
 
-        self.scene.enemies.remove(self)
+        if self in self.scene.enemies:
+            self.scene.enemies.remove(self)
         del self

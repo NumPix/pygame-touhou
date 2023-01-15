@@ -60,7 +60,7 @@ class MusicModule:
         return None
 
     @staticmethod
-    def play_music(background: str, volume: float = .5) -> None:
+    def play_music(background: str, volume: float = .3) -> None:
         from assets.scripts.math_and_data.enviroment import PATH
         mixer.music.load(path_join(PATH, "assets", "music", background))
         mixer.music.set_volume(volume)

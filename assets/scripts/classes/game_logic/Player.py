@@ -40,7 +40,7 @@ class Player(Entity):
         self.slow: bool = False
 
         self.attack_timer = 0
-        self.power = 1
+        self.power = 4
 
         self.bullets = []
 
@@ -108,14 +108,14 @@ class Player(Entity):
         self.collider.position = self.position
 
     def shoot(self) -> None:
-        if self.attack_timer >= 14:
+        if self.attack_timer >= 16:
             music_module.sounds[17](.1)
             self.bullets += self.attack_function(self.position + Vector2.up() * 10, int(self.power))
             self.attack_timer = 0
 
     def get_damage(self):
         music_module.sounds[16](.2)
-        self.scene.bullet_cleaner = BulletCleaner(self.position, give_points=True)
+        self.scene.bullet_cleaner = BulletCleaner(self.position)
         self.hp -= 1
         self.reviving = True
         self.position = Vector2(50 + (GAME_ZONE[2] - GAME_ZONE[0]) // 2, HEIGHT + 80)
