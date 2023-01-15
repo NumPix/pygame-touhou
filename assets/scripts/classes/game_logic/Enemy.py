@@ -1,6 +1,7 @@
 import numpy as np
 import pygame.surface
 
+from assets.scripts.classes.game_logic.Effect import Effect
 from assets.scripts.classes.game_logic.Item import *
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
 from assets.scripts.math_and_data.Vector2 import Vector2
@@ -45,6 +46,10 @@ class Enemy(Entity):
         self.death_effect_sprite.image = pygame.image.load(path_join("assets", "sprites", "effects", "fairy_death_0.png")).convert_alpha()
         self.death_effect_sprite.rect = self.death_effect_sprite.image.get_rect()
 
+        self.bullet_spawn_sprite = pygame.sprite.Sprite()
+        self.bullet_spawn_sprite.image = pygame.image.load(path_join("assets", "sprites", "effects", "bullet_spawn_effect.png")).convert_alpha()
+        self.bullet_spawn_sprite.rect = self.bullet_spawn_sprite.image.get_rect()
+
         self.bullets: list = bullet_pool
 
         self.collider: Collider = collider
@@ -53,14 +58,9 @@ class Enemy(Entity):
         self.scene = scene
         self.target = scene.player
 
-        self.alive = True
-
         self.speed = speed
 
     def move(self) -> None:
-        if not self.alive:
-            return
-
         self.collider.position = self.position + self.collider.offset
 
         delta_time = self.scene.delta_time
@@ -77,20 +77,21 @@ class Enemy(Entity):
             if self.t >= self.attack_data[self.attack_count][1]:
                 music_module.sounds[3](.1)
                 bullets = self.attack_data[self.attack_count][0](*self.attack_data[self.attack_count][2])
+
                 for bullet in bullets:
                     bullet.position += self.position
+
+                if len(self.bullets) > 0:
+                    self.scene.effects.append(Effect(
+                        position=bullets[0].position,
+                        sprite_sheet=[set_alpha_sprite(scale_sprite(self.bullet_spawn_sprite, 3 - n / 2), 50 + n * 41).image for n in range(5)],
+                        delay=4
+                    ))
+
                 self.bullets.extend(bullets)
                 self.attack_count += 1
 
-        if self.alive:
-            self.next_sprite(4)
-        else:
-            if self.change_sprite_timer >= 2:
-                self.current_sprite += 1
-                if self.current_sprite == len(self.sprite_sheet):
-                    self.death()
-
-                self.change_sprite_timer = 0
+        self.next_sprite(4)
 
         for bullet in self.target.bullets:
             if self.collider.check_collision(bullet.collider):
@@ -102,14 +103,19 @@ class Enemy(Entity):
     def get_damage(self, damage: int) -> None:
         music_module.sounds[2](.2)
         self.current_hp -= damage
-        if self.current_hp <= 0 and self.alive:
-            music_module.sounds[23](.15)
-            self.alive = False
-            self.current_sprite = 0
-            self.sprite_sheet = [set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51).image for n in range(5)]
+        if self.current_hp <= 0:
+            self.death()
 
     def death(self):
         if self.current_hp <= 0:
+            music_module.sounds[23](.15)
+
+            self.scene.effects.append(Effect(
+                position=self.position,
+                sprite_sheet=[set_alpha_sprite(scale_sprite(self.death_effect_sprite, 1 + n / 2), 255 - n * 51).image for n in range(5)],
+                delay=4
+            ))
+
             self.target.points += 10000
             drop = np.random.choice(self.drop[0], 1, self.drop[1])
             drop_item = None
@@ -126,5 +132,6 @@ class Enemy(Entity):
 
             if drop_item is not None:
                 self.scene.items.append(drop_item)
+
         self.scene.enemies.remove(self)
         del self

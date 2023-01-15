@@ -1,6 +1,6 @@
 {
   "music": "",
-  "length": 1000,
+  "length": 40,
   "enemies": [
     {
       "start_position": [50, 0],

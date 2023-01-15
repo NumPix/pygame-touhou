@@ -2,10 +2,8 @@ import numpy as np
 import pygame
 from pygame.locals import *
 import json
-from os.path import join as path_join
 
 from assets.scripts.classes.game_logic.BulletData import BulletData
-from assets.scripts.classes.game_logic.Collider import Collider
 from assets.scripts.classes.game_logic.Enemy import Enemy
 from assets.scripts.classes.game_logic.Item import *
 from assets.scripts.classes.game_logic.Player import Player
@@ -42,10 +40,13 @@ class GameScene(Scene):
         self.items = []
         self.bullet_cleaner = None
 
+        self.effects = []
+
         self.bullet_group = pygame.sprite.RenderPlain()
         self.item_group = pygame.sprite.RenderPlain()
         self.hud_group = pygame.sprite.RenderPlain()
         self.entity_group = pygame.sprite.RenderPlain()
+        self.effect_group = pygame.sprite.RenderPlain()
 
         self.time = 0
         self.level = json.load(open(path_join("assets", "levels", "touhou", "level_1.json")))
@@ -83,6 +84,9 @@ class GameScene(Scene):
     def update(self, delta_time):
         self.delta_time = delta_time
         self.time += delta_time
+
+        if self.time >= self.level["length"]:
+            self.player.switch_to_scoreboard()
 
         if self.level_enemies and self.enemy_count < len(self.level_enemies):
             if self.time >= self.level_enemies[self.enemy_count]["time"]:
@@ -182,6 +186,12 @@ class GameScene(Scene):
                 self.items.remove(item)
                 del item
 
+        for effect in self.effects:
+            ended = not effect.update(delta_time)
+            if ended:
+                self.effects.remove(effect)
+                del effect
+
         if self.bullet_cleaner:
             self.bullet_cleaner.update(self.enemy_bullets, self, delta_time)
             if self.bullet_cleaner.kill:
@@ -209,6 +219,9 @@ class GameScene(Scene):
         for item in self.items:
             self.item_group.add(item.get_sprite())
 
+        for effect in self.effects:
+            self.effect_group.add(effect.get_sprite())
+
         self.hud_group.add(self.bg)
 
         high_score = sorted(db_module.get_leaderboard(), key=lambda x: x[1])[-1][1] if len(db_module.get_leaderboard()) > 0 else 0
@@ -223,7 +236,7 @@ class GameScene(Scene):
         hp_label = self.font.render(f"Player:   {'★' * self.player.hp}", True, (255, 255, 255)).convert_alpha()
 
         player_sprite = self.player.get_sprite()
-        if self.player.reviving and self.player.invincibility_timer % 40 > 30:
+        if (self.player.reviving and self.player.invincibility_timer % 40 > 30) or self.player.slow:
             player_sprite.image.set_alpha(170)
 
         self.entity_group.add(player_sprite)
@@ -234,11 +247,14 @@ class GameScene(Scene):
         self.entity_group.draw(screen)
         self.item_group.draw(screen)
         self.bullet_group.draw(screen)
+        self.effect_group.draw(screen)
 
         if self.bullet_cleaner:
             screen.blit(self.bullet_cleaner.get_sprite(), (self.bullet_cleaner.collider.position - self.bullet_cleaner.collider.radius).to_tuple())
 
-        pygame.draw.circle(screen, (255, 0, 0), self.player.collider.position.to_tuple(), self.player.collider.radius)
+        if self.player.slow:
+            player_hitbox_sprite = self.player.get_hitbox_sprite()
+            screen.blit(player_hitbox_sprite, (self.player.position - (Vector2(*player_hitbox_sprite.get_size())) // 2).to_tuple())
 
         self.hud_group.draw(screen)
 
@@ -247,6 +263,7 @@ class GameScene(Scene):
         screen.blit(hp_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 280))
         screen.blit(power_label, (GAME_ZONE[0] + GAME_ZONE[2] + 50, 330))
 
+        self.effect_group.empty()
         self.entity_group.empty()
         self.item_group.empty()
         self.bullet_group.empty()
