@@ -24,6 +24,7 @@
         "list": ["points", "power_small", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 7
     },
 
@@ -49,6 +50,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 7
     },
 
@@ -74,6 +76,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 8
     },
     {
@@ -98,6 +101,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 8
     },
     {
@@ -122,6 +126,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 9
     },
     {
@@ -146,6 +151,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 9
     },
 
@@ -173,6 +179,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 17
     },
     {
@@ -197,6 +204,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 17.4
     },
     {
@@ -221,6 +229,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 17.8
     },
     {
@@ -245,6 +254,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 18.2
     },
     {
@@ -269,6 +279,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 18.6
     },
     {
@@ -293,6 +304,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 19
     },
     {
@@ -317,6 +329,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 19.4
     },
 
@@ -344,6 +357,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 17.1
     },
     {
@@ -368,6 +382,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 17.5
     },
     {
@@ -392,6 +407,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 17.9
     },
     {
@@ -416,6 +432,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 18.3
     },
     {
@@ -440,6 +457,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 18.7
     },
     {
@@ -464,6 +482,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 19.1
     },
     {
@@ -488,6 +507,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 19.5
     },
 
@@ -517,6 +537,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 20.5
     },
     {
@@ -541,6 +562,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 20.9
     },
     {
@@ -565,6 +587,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 21.3
     },
     {
@@ -589,6 +612,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 21.7
     },
     {
@@ -613,6 +637,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 22.1
     },
     {
@@ -637,6 +662,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 22.5
     },
     {
@@ -661,6 +687,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 22.9
     },
 
@@ -686,6 +713,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 20.5
     },
     {
@@ -710,6 +738,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 20.9
     },
     {
@@ -734,6 +763,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 21.3
     },
     {
@@ -758,6 +788,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 21.7
     },
     {
@@ -782,6 +813,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 22.1
     },
     {
@@ -806,6 +838,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 22.5
     },
     {
@@ -830,6 +863,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 22.9
     },
 
@@ -860,6 +894,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 25
     },
     {
@@ -884,6 +919,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 25.5
     },
     {
@@ -908,6 +944,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 26
     },
 
@@ -934,6 +971,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 25
     },
     {
@@ -958,6 +996,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 25.5
     },
     {
@@ -982,6 +1021,7 @@
         "list": ["points", "power_large", "nothing"],
         "probabilities": [40, 30, 30]
       },
+      "clear_on_death": false,
       "time": 26
     },
 
@@ -1012,6 +1052,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 31
     },
     {
@@ -1036,6 +1077,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 31.4
     },
     {
@@ -1060,6 +1102,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 31.8
     },
     {
@@ -1084,6 +1127,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 32.2
     },
     {
@@ -1108,6 +1152,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 32.6
     },
     {
@@ -1132,6 +1177,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 33
     },
     {
@@ -1156,6 +1202,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 33.4
     },
 
@@ -1181,6 +1228,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 31
     },
     {
@@ -1205,6 +1253,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 31.4
     },
     {
@@ -1229,6 +1278,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 31.8
     },
     {
@@ -1253,6 +1303,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 32.2
     },
     {
@@ -1277,6 +1328,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 32.6
     },
     {
@@ -1301,6 +1353,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 33
     },
     {
@@ -1325,6 +1378,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 33.4
     },
 
@@ -1358,6 +1412,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 35
     },
     {
@@ -1382,6 +1437,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 35.4
     },
     {
@@ -1406,6 +1462,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 35.8
     },
     {
@@ -1430,6 +1487,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 36.2
     },
     {
@@ -1454,6 +1512,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 36.6
     },
     {
@@ -1478,6 +1537,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 37
     },
     {
@@ -1502,6 +1562,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 37.4
     },
 
@@ -1529,6 +1590,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 35.1
     },
     {
@@ -1553,6 +1615,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 35.5
     },
     {
@@ -1577,6 +1640,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 35.9
     },
     {
@@ -1601,6 +1665,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 36.3
     },
     {
@@ -1625,6 +1690,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 36.7
     },
     {
@@ -1649,6 +1715,7 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 37.1
     },
     {
@@ -1673,7 +1740,67 @@
         "list": ["points", "power_small", "power_large"],
         "probabilities": [50, 35, 15]
       },
+      "clear_on_death": false,
       "time": 37.5
+    },
+
+
+
+
+    {
+      "start_position": [100, 0],
+      "trajectory": [
+        [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, 100], [100, -50]
+      ],
+      "speed": 1,
+      "sprite": {
+        "size": [24, 19],
+        "path": ["assets", "sprites", "entities", "fairy_0.png"]
+      },
+      "collider": {
+        "radius": 15,
+        "offset": [0, 0]
+      },
+      "hp": 25,
+      "attacks": [
+        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1, 0.2, 0, 17, false],
+        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.1, 0.2, 0, 17, false],
+        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.2, 0.2, 0, 17, false]
+      ],
+      "drop": {
+        "list": ["points", "power_small", "nothing"],
+        "probabilities": [40, 30, 30]
+      },
+      "clear_on_death": true,
+      "time": 40
+    },
+
+    {
+      "start_position": [500, 0],
+      "trajectory": [
+        [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, 100], [500, -50]
+      ],
+      "speed": 1,
+      "sprite": {
+        "size": [24, 19],
+        "path": ["assets", "sprites", "entities", "fairy_0.png"]
+      },
+      "collider": {
+        "radius": 15,
+        "offset": [0, 0]
+      },
+      "hp": 25,
+      "attacks": [
+        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1, 0.2, 0, -17, false],
+        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.1, 0.2, 0, -17, false],
+        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.2, 0.2, 0, -17, false]
+      ],
+      "drop": {
+        "list": ["points", "power_large", "nothing"],
+        "probabilities": [40, 30, 30]
+      },
+      "clear_on_death": true,
+      "time": 40
     }
   ]
 }

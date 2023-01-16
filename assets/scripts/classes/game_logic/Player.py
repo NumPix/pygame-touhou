@@ -122,7 +122,7 @@ class Player(Entity):
 
     def add_power(self, power: float):
         self.power += power
-        if power > 4:
+        if self.power > 4:
             self.power = 4
 
     def switch_to_scoreboard(self):

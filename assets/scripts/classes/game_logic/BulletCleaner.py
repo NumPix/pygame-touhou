@@ -8,7 +8,7 @@ from assets.scripts.math_and_data.functions import clamp
 
 
 class BulletCleaner:
-    def __init__(self, position: Vector2, increase_speed=1000, give_points: bool = False):
+    def __init__(self, position: Vector2, increase_speed=1000, give_points: bool = False, show_sprite: bool = True):
         self.collider = Collider(
             0,
             position
@@ -20,6 +20,7 @@ class BulletCleaner:
         self.give_points = give_points
 
         self.kill = False
+        self.show_sprite = show_sprite
 
     def update(self, bullets, scene, delta_time):
         self.collider.radius += self.increase_speed * delta_time
@@ -39,6 +40,8 @@ class BulletCleaner:
             self.kill = True
 
     def get_sprite(self):
+        if not self.show_sprite:
+            return pygame.Surface((0, 0))
         image = pygame.transform.scale(self.sprite, (self.collider.radius * 2, self.collider.radius * 2))
         image.set_alpha(clamp(255 - self.collider.radius ** 2 / (GAME_ZONE[2] ** 2 + GAME_ZONE[3] ** 2) * 1000, 0, 255))
 

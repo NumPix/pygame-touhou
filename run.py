@@ -5,7 +5,7 @@ from assets.scripts.math_and_data.enviroment import *
 
 pygame.init()
 
-pygame.mixer.pre_init(44100, -16, 32, 512)
+pygame.mixer.pre_init(48000, -16, 2, 4096)
 pygame.mixer.init()
 
 

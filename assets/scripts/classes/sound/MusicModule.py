@@ -3,32 +3,10 @@ from pygame import mixer
 from os import listdir
 from os.path import join as path_join
 
+from assets.scripts.classes.sound.Sound import Sound
 
-class Sound:
-    def __init__(self, filename: str, duration: int = 0, fade: int = 0, volume: int = 1,
-                 global_volume: float = 1) -> None:
-
-        self.name = filename
-        self.sound = mixer.Sound(path_join("assets", "music", filename))
-        self.duration = duration
-        self.fade = fade
-        self.volume = volume
-        self.global_volume = global_volume
-
-        self.sound.set_volume(self.volume * self.global_volume)
-
-    def __call__(self, volume) -> None:
-        self.sound.set_volume(volume)
-        self.sound.play(0, self.duration, self.fade)
-
-    def change_config(self, duration: int = None, fade_ms: int = None, global_volume: float = None) -> None:
-        if duration:
-            self.duration = duration
-        if fade_ms:
-            self.fade = fade_ms
-        if global_volume:
-            self.global_volume = global_volume
-            self.sound.set_volume(self.volume * self.global_volume)
+DEFAULT_GLOBAL_VOLUME = 1
+DEFAULT_MUSIC_VOLUME = .3
 
 
 class MusicModule:
@@ -39,7 +17,7 @@ class MusicModule:
 
         from assets.scripts.math_and_data.enviroment import PATH
 
-        self.sounds = [Sound(path_join(PATH, "assets", "music", "sounds", filename)) for filename in filter(lambda x: x.endswith(".wav"), listdir(path_join(PATH, "assets", "music", "sounds")))]
+        self.sounds = [Sound(path_join(PATH, "assets", "music", "sounds", filename), global_volume=DEFAULT_GLOBAL_VOLUME) for filename in filter(lambda x: x.endswith(".wav"), listdir(path_join(PATH, "assets", "music", "sounds")))]
         self.sounds.sort(key=lambda sound: sound.name)
         self.bg_volume = volume
 
@@ -60,7 +38,7 @@ class MusicModule:
         return None
 
     @staticmethod
-    def play_music(background: str, volume: float = .3) -> None:
+    def play_music(background: str, volume: float = DEFAULT_MUSIC_VOLUME) -> None:
         from assets.scripts.math_and_data.enviroment import PATH
         mixer.music.load(path_join(PATH, "assets", "music", background))
         mixer.music.set_volume(volume)

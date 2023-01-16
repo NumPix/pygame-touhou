@@ -1,6 +1,7 @@
 import numpy as np
 import pygame.surface
 
+from assets.scripts.classes.game_logic.BulletCleaner import BulletCleaner
 from assets.scripts.classes.game_logic.Effect import Effect
 from assets.scripts.classes.game_logic.Item import *
 from assets.scripts.classes.hud_and_rendering.SpriteSheet import SpriteSheet
@@ -23,6 +24,7 @@ class Enemy(Entity):
                  hp: int,
                  attack_data: [(callable, float), ...],
                  drop,
+                 clear_bullets_on_death,
                  bullet_pool,
                  scene):
 
@@ -49,6 +51,8 @@ class Enemy(Entity):
         self.bullet_spawn_sprite = pygame.sprite.Sprite()
         self.bullet_spawn_sprite.image = pygame.image.load(path_join("assets", "sprites", "effects", "bullet_spawn_effect.png")).convert_alpha()
         self.bullet_spawn_sprite.rect = self.bullet_spawn_sprite.image.get_rect()
+
+        self.clear_bullets_on_death = clear_bullets_on_death
 
         self.bullets: list = bullet_pool
 
@@ -109,6 +113,9 @@ class Enemy(Entity):
     def death(self):
         if self.current_hp <= 0:
             music_module.sounds[23](.15)
+
+            if self.clear_bullets_on_death:
+                self.scene.bullet_cleaner = BulletCleaner(self.position, give_points=True, show_sprite=False)
 
             self.scene.effects.append(Effect(
                 position=self.position,

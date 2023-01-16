@@ -45,7 +45,7 @@ class AttackFunctions:
         return bullets
 
     @staticmethod
-    def cone(center: Vector2, angle: int | str, number_of_bullets: int, bullet_data: BulletData, speed: float, delta_angle: int, angular_speed=0, player: Player=None, enemy: Enemy=None):
+    def cone(center: Vector2, angle, number_of_bullets: int, bullet_data: BulletData, speed: float, delta_angle: int, angular_speed=0, player: Player=None, enemy: Enemy=None):
         bullets = [
             Bullet(
                 bullet_data,
@@ -68,7 +68,7 @@ class AttackFunctions:
         attacks = [
             (
                 AttackFunctions.cone,
-                start_time + delay * n,
+                round(start_time + delay * n, 3),
                 [center, angle, number_of_bullets, bullet_data, speed, delta_angle, angular_speed, player, enemy]
             )
             for n in range(number_of_cones)
@@ -83,7 +83,7 @@ class AttackFunctions:
         attacks = [
             (
                 AttackFunctions.ring,
-                start_time + delay * n,
+                round(start_time + delay * n, 3),
                 [Vector2.zero() if not rand_center else\
             Vector2.one().rotate(random.randint(0, 360)) * 25, number_of_bullets, bullet_data, speed, angular_speed, n * delta_angle]
             )
@@ -98,7 +98,7 @@ class AttackFunctions:
         attacks = [
             (
                 AttackFunctions.random,
-                start_time + delay * n,
+                round(start_time + delay * n, 3),
                 [Vector2 if not rand_center else\
             Vector2.one().rotate(random.randint(0, 360)) * 25, number_of_bullets, bullet_data, speed, angular_speed]
             )

@@ -22,4 +22,4 @@ class ScoreboardLine:
         return self.mask() == other.mask()
 
     def __str__(self):
-        return '     '.join(map(str, [self.name, '{:8}'.format(self.score), self.date, self.slow]))
+        return '     '.join(map(str, [self.name, '{:8}'.format(self.score), self.date if self.date != "01/01/70" else "--/--/--", self.slow]))

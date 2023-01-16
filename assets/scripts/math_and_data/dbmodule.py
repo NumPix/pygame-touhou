@@ -20,6 +20,15 @@ class DAO:
         )
         """
 
+        fill = """
+        INSERT INTO leaderboard
+        VALUES ("________", ?, "01/01/70", 0)
+        """
+
+        if len(self.get_leaderboard()) == 0:
+            for n in range(1, 11):
+                self.cur.execute(fill, [n * 100000])
+
         self.cur.execute(build)
 
     def get_leaderboard(self):
@@ -30,6 +39,15 @@ class DAO:
         leaderboard.score DESC,
         leaderboard.date ASC,
         leaderboard.slow ASC
+        """
+
+        return self.cur.execute(sql).fetchall()
+
+    def get_highscore(self):
+        sql = """
+        SELECT MAX(score)
+        FROM leaderboard
+        WHERE name <> "________"
         """
 
         return self.cur.execute(sql).fetchall()

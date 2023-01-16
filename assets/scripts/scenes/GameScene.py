@@ -34,7 +34,7 @@ class GameScene(Scene):
 
         self.font = pygame.font.Font(path_join("assets", "fonts", "DFPPOPCorn-W12.ttf"), 36)
 
-        self.player = Player(0, self, 1)
+        self.player = Player(0, self, 4)
 
         self.enemy_bullets = []
         self.items = []
@@ -49,7 +49,7 @@ class GameScene(Scene):
         self.effect_group = pygame.sprite.RenderPlain()
 
         self.time = 0
-        self.level = json.load(open(path_join("assets", "levels", "touhou", "level_1.json")))
+        self.level = json.load(open(path_join("assets", "levels", "level_1.json")))
         self.level_enemies = sorted(self.level["enemies"], key=lambda enemy: enemy["time"])
         self.enemy_count = 0
 
@@ -100,6 +100,7 @@ class GameScene(Scene):
                     hp=enemy_data["hp"],
                     attack_data=[(*attack[:3], (path_join(*attack[3][0]), attack[3][1], attack[3][2], attack[3][3], Vector2(*attack[3][4])), *attack[4:]) for attack in enemy_data["attacks"]],
                     drop=(enemy_data["drop"]["list"], enemy_data["drop"]["list"]),
+                    clear_bullets_on_death=enemy_data["clear_on_death"],
                     bullet_pool=self.enemy_bullets,
                     scene=self
                 )
@@ -165,7 +166,8 @@ class GameScene(Scene):
                                 enemy=enemy
                             )
                         )
-                    enemy.attack_data = attack_data
+
+                enemy.attack_data = sorted(attack_data, key=lambda x: x[1])
 
                 self.enemies.append(enemy)
                 self.enemy_count += 1
@@ -224,7 +226,10 @@ class GameScene(Scene):
 
         self.hud_group.add(self.bg)
 
-        high_score = sorted(db_module.get_leaderboard(), key=lambda x: x[1])[-1][1] if len(db_module.get_leaderboard()) > 0 else 0
+        high_score = db_module.get_highscore()[0][0]
+
+        if not high_score:
+            high_score = 0
 
         hi_score_label = self.font.render(f"HiScore:    {format(high_score if high_score > self.player.points else self.player.points, '09d')}", True, (255, 255, 255)).convert_alpha()
 
@@ -236,8 +241,8 @@ class GameScene(Scene):
         hp_label = self.font.render(f"Player:   {'★' * self.player.hp}", True, (255, 255, 255)).convert_alpha()
 
         player_sprite = self.player.get_sprite()
-        if (self.player.reviving and self.player.invincibility_timer % 40 > 30) or self.player.slow:
-            player_sprite.image.set_alpha(170)
+        if self.player.slow or (self.player.reviving and self.player.invincibility_timer % 40 > 30):
+            player_sprite.image.set_alpha(150)
 
         self.entity_group.add(player_sprite)
 
