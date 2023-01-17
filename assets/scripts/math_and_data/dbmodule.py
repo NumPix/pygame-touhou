@@ -20,6 +20,8 @@ class DAO:
         )
         """
 
+        self.cur.execute(build)
+
         fill = """
         INSERT INTO leaderboard
         VALUES ("________", ?, "01/01/70", 0)
@@ -28,8 +30,6 @@ class DAO:
         if len(self.get_leaderboard()) == 0:
             for n in range(1, 11):
                 self.cur.execute(fill, [n * 100000])
-
-        self.cur.execute(build)
 
     def get_leaderboard(self):
         sql = """

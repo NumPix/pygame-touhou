@@ -5,8 +5,8 @@ from os.path import join as path_join
 
 from assets.scripts.classes.sound.Sound import Sound
 
-DEFAULT_GLOBAL_VOLUME = 1
-DEFAULT_MUSIC_VOLUME = .3
+DEFAULT_GLOBAL_VOLUME = 0
+DEFAULT_MUSIC_VOLUME = 0
 
 
 class MusicModule:
@@ -32,7 +32,7 @@ class MusicModule:
         for sound in self.sounds:
             sound.change_config(global_volume=global_volume)
 
-    def __getitem__(self, index: int) -> Sound | None:
+    def __getitem__(self, index: int) -> Sound:
         if index in range(len(self.sounds)):
             return self.sounds[index]
         return None
