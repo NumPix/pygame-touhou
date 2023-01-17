@@ -40,7 +40,7 @@ class Player(Entity):
         self.slow: bool = False
 
         self.attack_timer = 0
-        self.power = 4
+        self.power = 2.4
 
         self.bullets = []
 

@@ -115,7 +115,7 @@ class Enemy(Entity):
             music_module.sounds[23](.15)
 
             if self.clear_bullets_on_death:
-                self.scene.bullet_cleaner = BulletCleaner(self.position, give_points=True, show_sprite=False)
+                self.scene.bullet_cleaner = BulletCleaner(self.position, give_points=True, show_sprite=False, increase_speed=2000)
 
             self.scene.effects.append(Effect(
                 position=self.position,

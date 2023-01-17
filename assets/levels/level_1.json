@@ -1,6 +1,6 @@
 {
   "music": "",
-  "length": 50,
+  "length": 55,
   "enemies": [
     {
       "start_position": [50, 0],
@@ -1763,9 +1763,9 @@
       },
       "hp": 25,
       "attacks": [
-        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1, 0.2, 0, 17, false],
-        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.1, 0.2, 0, 17, false],
-        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.2, 0.2, 0, 17, false]
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1, 0.2, 0, 17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.1, 0.2, 0, 17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.2, 0.2, 0, 17, false]
       ],
       "drop": {
         "list": ["points", "power_small", "nothing"],
@@ -1791,9 +1791,9 @@
       },
       "hp": 25,
       "attacks": [
-        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1, 0.2, 0, -17, false],
-        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.1, 0.2, 0, -17, false],
-        ["wide_ring", 8, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 16, 16, 4, [0, 0]], 200, 1.2, 0.2, 0, -17, false]
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1, 0.2, 0, -17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.1, 0.2, 0, -17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.2, 0.2, 0, -17, false]
       ],
       "drop": {
         "list": ["points", "power_large", "nothing"],
@@ -1801,6 +1801,62 @@
       },
       "clear_on_death": true,
       "time": 40
+    },
+
+    {
+      "start_position": [650, 125],
+      "trajectory": [
+        [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125], [475, 125]
+      ],
+      "speed": 1,
+      "sprite": {
+        "size": [24, 19],
+        "path": ["assets", "sprites", "entities", "fairy_0.png"]
+      },
+      "collider": {
+        "radius": 15,
+        "offset": [0, 0]
+      },
+      "hp": 25,
+      "attacks": [
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1, 0.2, 0, 17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.1, 0.2, 0, 17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.2, 0.2, 0, 17, false]
+      ],
+      "drop": {
+        "list": ["points", "power_large", "nothing"],
+        "probabilities": [40, 30, 30]
+      },
+      "clear_on_death": true,
+      "time": 40.3
+    },
+
+    {
+      "start_position": [-50, 125],
+      "trajectory": [
+        [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125], [125, 125]
+      ],
+      "speed": 1,
+      "sprite": {
+        "size": [24, 19],
+        "path": ["assets", "sprites", "entities", "fairy_0.png"]
+      },
+      "collider": {
+        "radius": 15,
+        "offset": [0, 0]
+      },
+      "hp": 25,
+      "attacks": [
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1, 0.2, 0, -17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.1, 0.2, 0, -17, false],
+        ["wide_ring", 3, 60, [["assets", "sprites", "projectiles_and_items", "ellipse_bullet_0.png"], 24, 24, 4, [0, 0]], 200, 1.2, 0.2, 0, -17, false]
+      ],
+      "drop": {
+        "list": ["points", "power_large", "nothing"],
+        "probabilities": [40, 30, 30]
+      },
+      "clear_on_death": true,
+      "time": 40.3
     }
   ]
 }

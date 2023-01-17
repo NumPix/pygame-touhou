@@ -8,7 +8,7 @@ from assets.scripts.math_and_data.functions import clamp
 
 
 class BulletCleaner:
-    def __init__(self, position: Vector2, increase_speed=1000, give_points: bool = False, show_sprite: bool = True):
+    def __init__(self, position: Vector2, increase_speed: int = 1000, give_points: bool = False, show_sprite: bool = True):
         self.collider = Collider(
             0,
             position
