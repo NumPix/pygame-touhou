@@ -4,9 +4,7 @@ from os import listdir
 from os.path import join as path_join
 
 from assets.scripts.classes.sound.Sound import Sound
-
-DEFAULT_GLOBAL_VOLUME = 1
-DEFAULT_MUSIC_VOLUME = .3
+from assets.scripts.math_and_data.enviroment import DEFAULT_GLOBAL_VOLUME, DEFAULT_MUSIC_VOLUME
 
 
 class MusicModule:
@@ -17,11 +15,23 @@ class MusicModule:
 
         from assets.scripts.math_and_data.enviroment import PATH
 
-        self.sounds = [Sound(path_join(PATH, "assets", "music", "sounds", filename), global_volume=DEFAULT_GLOBAL_VOLUME) for filename in filter(lambda x: x.endswith(".wav"), listdir(path_join(PATH, "assets", "music", "sounds")))]
+        self.sounds = [
+            Sound(
+                path_join(PATH, "assets", "music", "sounds", filename),
+                global_volume=DEFAULT_GLOBAL_VOLUME
+            )
+
+            for filename in filter(
+                lambda x: x.endswith(".wav"),
+                listdir(path_join(PATH, "assets", "music", "sounds"))
+            )
+        ]
+
         self.sounds.sort(key=lambda sound: sound.name)
         self.bg_volume = volume
 
-    def change_sound_config(self, index: int, duration: int = None, fade: int = None, global_volume: float = None) -> None:
+    def change_sound_config(self, index: int, duration: int = None, fade: int = None,
+                            global_volume: float = None) -> None:
         mixer.music.set_volume(self.bg_volume * global_volume)
 
         if index in range(len(self.sounds)):
