@@ -5,8 +5,8 @@ from os.path import join as path_join
 
 from assets.scripts.classes.sound.Sound import Sound
 
-DEFAULT_GLOBAL_VOLUME = 0
-DEFAULT_MUSIC_VOLUME = 0
+DEFAULT_GLOBAL_VOLUME = 1
+DEFAULT_MUSIC_VOLUME = .3
 
 
 class MusicModule:

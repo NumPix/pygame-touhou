@@ -91,6 +91,10 @@ class Vector2:
         return self.x() / self.y()
 
     @staticmethod
+    def random_int(min_x, max_x, min_y, max_y):
+        return Vector2(np.random.randint(min_x, max_x), np.random.randint(min_y, max_y))
+
+    @staticmethod
     def one() -> Vector2:
         return Vector2(1, 1)
 

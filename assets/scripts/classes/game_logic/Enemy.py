@@ -124,21 +124,22 @@ class Enemy(Entity):
             ))
 
             self.target.points += 10000
-            drop = np.random.choice(self.drop[0], 1, self.drop[1])
+            drops = np.random.choice(self.drop[0], np.random.randint(1, 4), self.drop[1])
             drop_item = None
-            if drop == "power_large":
-                drop_item = PowerItem(self.position, True)
-            elif drop == "power_small":
-                drop_item = PowerItem(self.position, False)
-            elif drop == "points":
-                drop_item = PointItem(self.position)
-            elif drop == "full_power":
-                drop_item = FullPowerItem(self.position)
-            elif drop == "1up":
-                drop_item = OneUpItem(self.position)
+            for drop in drops:
+                if drop == "power_large":
+                    drop_item = PowerItem(self.position + Vector2.random_int(-75, 75, -50, 0), True)
+                elif drop == "power_small":
+                    drop_item = PowerItem(self.position + Vector2.random_int(-75, 75, -50, 0), False)
+                elif drop == "points":
+                    drop_item = PointItem(self.position + Vector2.random_int(-75, 75, -50, 0))
+                elif drop == "full_power":
+                    drop_item = FullPowerItem(self.position + Vector2.random_int(-75, 75, -50, 0))
+                elif drop == "1up":
+                    drop_item = OneUpItem(self.position + Vector2.random_int(-75, 75, -50, 0))
 
-            if drop_item is not None:
-                self.scene.items.append(drop_item)
+                if drop_item is not None:
+                    self.scene.items.append(drop_item)
 
         if self in self.scene.enemies:
             self.scene.enemies.remove(self)
