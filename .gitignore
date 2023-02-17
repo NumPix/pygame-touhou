@@ -1,0 +1,6 @@
+assets/database.db
+assets/scripts/classes/game_logic/__pycache__/
+assets/scripts/classes/hud_and_rendering/__pycache__/
+assets/scripts/classes/sound/__pycache__/
+assets/scripts/math_and_data/__pycache__/
+assets/scripts/scenes/__pycache__/
